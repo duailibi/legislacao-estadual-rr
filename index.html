@@ -6,141 +6,186 @@
   <title>Simulador ALE-RR - Legislação Estadual</title>
   <style>
     :root {
-      --bg:#f4f7fb; --card:#ffffff; --card2:#f8fbff; --text:#172033; --muted:#667085;
-      --primary:#2563eb; --primary2:#7c3aed; --ok:#16a34a; --bad:#dc2626; --warn:#b45309;
-      --border:#d9e2ef; --soft:#edf2ff; --softText:#1d4ed8; --shadow:0 18px 45px rgba(15,23,42,.12);
+      color-scheme:light;
+      --bg:#f5f8ff; --bg2:#eaf1ff; --surface:#ffffff; --surface-2:#f8fbff; --surface-3:#eef5ff;
+      --text:#101828; --muted:#667085; --primary:#2563eb; --primary-2:#7c3aed; --cyan:#0284c7;
+      --success:#16a34a; --danger:#dc2626; --warning:#ca8a04; --border:rgba(37,99,235,.18);
+      --shadow:0 20px 60px rgba(15,23,42,.12); --shadow-soft:0 12px 28px rgba(15,23,42,.10);
+      --radius:22px; --radius-sm:14px; --nav-h:74px;
     }
     [data-theme="dark"] {
-      --bg:#07111f; --card:#0f1b2d; --card2:#12223a; --text:#e5edf9; --muted:#9fb0c8;
-      --primary:#60a5fa; --primary2:#a78bfa; --ok:#22c55e; --bad:#f87171; --warn:#fbbf24;
-      --border:#20334f; --soft:#172a46; --softText:#93c5fd; --shadow:0 18px 45px rgba(0,0,0,.42);
+      color-scheme:dark;
+      --bg:#050b18; --bg2:#071426; --surface:rgba(14,26,45,.86); --surface-2:rgba(19,35,58,.78); --surface-3:rgba(10,23,44,.72);
+      --text:#f8fafc; --muted:#94a3b8; --primary:#3b82f6; --primary-2:#8b5cf6; --cyan:#38bdf8;
+      --success:#22c55e; --danger:#ef4444; --warning:#facc15; --border:rgba(96,165,250,.22);
+      --shadow:0 24px 70px rgba(0,0,0,.45); --shadow-soft:0 14px 36px rgba(0,0,0,.32);
     }
     * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body {
       margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:radial-gradient(circle at top left, rgba(37,99,235,.18), transparent 35%), radial-gradient(circle at top right, rgba(124,58,237,.14), transparent 33%), var(--bg);
-      color:var(--text); min-height:100vh;
+      background:linear-gradient(135deg, var(--bg), var(--bg2) 45%, var(--bg));
+      color:var(--text); min-height:100vh; overflow-x:hidden;
     }
-    .wrap { max-width:1240px; margin:0 auto; padding:22px 16px 56px; }
-    header { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(320px,.85fr); gap:16px; align-items:stretch; margin-bottom:16px; }
-    .hero,.panel,.question-card { background:linear-gradient(180deg, rgba(255,255,255,.04), transparent), var(--card); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); }
-    .hero { padding:22px; position:relative; overflow:hidden; min-height:170px; }
-    .hero:after { content:""; position:absolute; right:-82px; top:-82px; width:250px; height:250px; border-radius:999px; background:linear-gradient(135deg,var(--primary),var(--primary2)); opacity:.18; }
-    h1 { margin:0 0 10px; font-size:clamp(1.8rem, 4vw, 3rem); letter-spacing:0; line-height:1.02; }
-    h2 { margin:0 0 12px; font-size:1.02rem; }
-    .subtitle { margin:0; color:var(--muted); font-size:1rem; max-width:780px; line-height:1.55; }
-    .badges { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; position:relative; z-index:1; }
-    .badge { padding:7px 10px; border-radius:999px; background:var(--soft); color:var(--softText); font-weight:800; font-size:.8rem; }
-    .stats { padding:16px; }
-    .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    .stat { padding:12px; border:1px solid var(--border); border-radius:16px; background:rgba(127,127,127,.04); min-height:66px; }
-    .stat b { display:block; font-size:1.35rem; }
-    .stat span { color:var(--muted); font-size:.82rem; }
-    .progressbar { height:12px; border-radius:999px; overflow:hidden; border:1px solid var(--border); background:rgba(127,127,127,.12); }
-    .progressbar div { height:100%; width:0; background:linear-gradient(90deg,var(--primary),var(--primary2)); transition:.25s; }
-    .toolbar { display:grid; grid-template-columns:1fr 220px 220px 190px; gap:10px; margin:16px 0; }
-    input,select,button { border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:14px; padding:11px 13px; font:inherit; outline:none; min-width:0; }
-    input:focus,select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(96,165,250,.18); }
-    button { cursor:pointer; font-weight:800; transition:.18s transform,.18s border-color,.18s opacity; display:inline-flex; justify-content:center; align-items:center; gap:8px; }
-    button:hover:not(:disabled) { transform:translateY(-1px); border-color:var(--primary); }
+    button,input,select { font:inherit; min-width:0; }
+    button { min-height:44px; border:1px solid var(--border); border-radius:var(--radius-sm); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01)), var(--surface-2); color:var(--text); cursor:pointer; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; transition:.18s transform,.18s border-color,.18s background,.18s opacity; }
+    input,select { min-height:48px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-3); color:var(--text); padding:12px 14px; outline:none; }
+    button:hover:not(:disabled) { transform:translateY(-1px); border-color:rgba(96,165,250,.7); }
+    button:active:not(:disabled) { transform:translateY(0) scale(.99); }
     button:disabled { opacity:.48; cursor:not-allowed; transform:none; }
-    .primary { background:linear-gradient(135deg,var(--primary),var(--primary2)); color:#fff; border:none; }
-    .danger { color:var(--bad); }
-    .main { display:grid; grid-template-columns:300px minmax(0,1fr); gap:16px; align-items:start; }
-    .side { position:sticky; top:14px; display:grid; gap:14px; }
-    .panel { padding:16px; }
-    .control-grid { display:grid; grid-template-columns:1fr; gap:9px; }
-    .control-grid .row { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-    .mode-banner { display:none; border:1px solid rgba(251,191,36,.45); background:rgba(251,191,36,.10); color:var(--warn); border-radius:16px; padding:12px 14px; margin-bottom:12px; font-weight:800; }
+    button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid rgba(59,130,246,.32); outline-offset:2px; border-color:var(--primary); }
+    .primary { background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; border:none; box-shadow:0 14px 34px rgba(59,130,246,.28); }
+    .danger { color:var(--danger); border-color:rgba(239,68,68,.28); background:linear-gradient(180deg,rgba(239,68,68,.10),rgba(239,68,68,.03)), var(--surface-2); }
+    .app-topbar { position:sticky; top:0; z-index:35; background:rgba(5,11,24,.78); backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+    [data-theme="light"] .app-topbar { background:rgba(245,248,255,.86); }
+    .topbar-inner { max-width:1760px; margin:0 auto; min-height:72px; padding:10px 18px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:18px; align-items:center; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-mark { width:46px; height:46px; border-radius:14px; display:grid; place-items:center; color:#bfdbfe; border:1px solid var(--border); background:linear-gradient(135deg,rgba(59,130,246,.20),rgba(139,92,246,.18)); font-size:1.5rem; }
+    .brand-title { font-weight:950; letter-spacing:.02em; line-height:1.05; }
+    .brand-sub { color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; margin-top:2px; }
+    .top-links { display:flex; align-items:center; justify-content:center; gap:8px; min-width:0; }
+    .top-links button,.quick-nav button { border-radius:999px; padding:10px 14px; min-height:40px; white-space:nowrap; }
+    .top-links button.active,.quick-nav button.active,.bottom-nav-item.active { background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(139,92,246,.22)); color:#bfdbfe; border-color:rgba(96,165,250,.55); }
+    .top-actions { display:flex; align-items:center; gap:10px; }
+    .profile-pill { min-height:44px; border:1px solid var(--border); border-radius:999px; padding:7px 12px; display:flex; align-items:center; gap:9px; background:var(--surface-2); color:var(--text); font-weight:800; }
+    .avatar { width:28px; height:28px; border-radius:999px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; }
+    .wrap { max-width:1760px; margin:0 auto; padding:18px; }
+    .app-shell { display:grid; grid-template-columns:260px minmax(0,1fr) 420px; gap:18px; align-items:start; }
+    .side-left,.side-right,.content-flow { display:grid; gap:16px; align-content:start; min-width:0; }
+    .side-left,.side-right { position:sticky; top:90px; }
+    .panel,.hero,.question-card,.discipline-card,.quick-nav { border:1px solid var(--border); border-radius:var(--radius); background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)), var(--surface); box-shadow:var(--shadow-soft); }
+    .panel,.discipline-card { padding:16px; }
+    .hero { padding:26px; overflow:hidden; position:relative; background:linear-gradient(135deg,rgba(37,99,235,.30),rgba(139,92,246,.16) 48%,rgba(14,26,45,.78)), var(--surface); }
+    .hero-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.82fr); gap:22px; align-items:center; }
+    .hero-theme-btn { display:none; position:absolute; right:14px; top:14px; border-radius:999px; min-height:38px; padding:8px 12px; }
+    h1 { margin:0 0 10px; font-size:clamp(1.85rem, 2.4vw, 2.35rem); line-height:1.06; letter-spacing:0; }
+    h2 { margin:0 0 12px; font-size:1rem; letter-spacing:.01em; }
+    .eyebrow { color:#93c5fd; font-weight:900; font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; }
+    .subtitle { margin:0; color:var(--muted); font-size:1rem; max-width:760px; line-height:1.55; }
+    .badges { display:none; }
+    .badge { padding:7px 10px; border-radius:999px; background:rgba(59,130,246,.16); color:#93c5fd; font-weight:900; font-size:.8rem; }
+    .stats { padding:0; background:transparent; border:0; box-shadow:none; }
+    .stat-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+    .stat { padding:14px; border:1px solid var(--border); border-radius:16px; background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.08)); min-height:78px; }
+    .stat b { display:block; font-size:1.45rem; line-height:1; color:#93c5fd; }
+    .stat span { color:var(--muted); font-size:.82rem; }
+    .stat:nth-child(3) b { color:var(--success); }
+    .stat:nth-child(4) b { color:var(--danger); }
+    .stat:nth-child(5) b { color:var(--warning); }
+    .stat:nth-child(6) b { color:#a78bfa; }
+    .progressbar { height:10px; border-radius:999px; overflow:hidden; border:1px solid var(--border); background:rgba(148,163,184,.12); margin-top:12px; }
+    .progressbar div { height:100%; width:0; background:linear-gradient(90deg,var(--primary),var(--primary-2)); transition:.25s; }
+    .quick-nav { display:flex; gap:10px; padding:12px; overflow-x:auto; scrollbar-width:none; }
+    .quick-nav::-webkit-scrollbar,.discipline-chips::-webkit-scrollbar { display:none; }
+    .discipline-card { display:grid; gap:12px; }
+    .discipline-chips { display:flex; gap:10px; overflow-x:auto; padding:2px 2px 5px; scrollbar-width:none; }
+    .discipline-chip { flex:0 0 auto; max-width:220px; min-height:56px; justify-content:flex-start; text-align:left; white-space:normal; border-radius:16px; padding:10px 12px; color:var(--text); }
+    .discipline-chip.active { border-color:rgba(96,165,250,.85); background:linear-gradient(135deg,rgba(59,130,246,.32),rgba(139,92,246,.18)); box-shadow:0 0 0 3px rgba(59,130,246,.14); }
+    .discipline-chip.active:after { content:"✓"; margin-left:auto; width:24px; height:24px; border-radius:999px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; }
+    .toolbar { display:grid; grid-template-columns:minmax(180px,1fr) minmax(170px,.6fr) minmax(170px,.6fr) minmax(160px,.5fr); gap:10px; margin:0; }
+    .search-wrap { position:relative; }
+    .search-wrap:before { content:"⌕"; position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; font-weight:900; }
+    .search-wrap input { width:100%; padding-left:40px; }
+    .control-grid { display:grid; gap:9px; }
+    .control-grid .row { display:grid; grid-template-columns:1fr; gap:9px; }
+    .mode-banner { display:none; border:1px solid rgba(250,204,21,.45); background:rgba(250,204,21,.10); color:var(--warning); border-radius:16px; padding:12px 14px; font-weight:900; }
     .mode-banner.show { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-    .question-card { padding:22px; min-height:460px; }
+    .question-card { padding:22px; min-height:460px; border-color:rgba(139,92,246,.42); box-shadow:var(--shadow); }
     .qtop { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:14px; }
-    .topic { color:var(--primary); font-weight:900; font-size:.88rem; text-transform:uppercase; letter-spacing:0; }
+    .qmeta-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .topic { color:#93c5fd; font-weight:950; font-size:.84rem; text-transform:uppercase; letter-spacing:.04em; }
     .qid,.mini { color:var(--muted); font-size:.88rem; line-height:1.45; }
-    .enunciado { font-size:1.18rem; line-height:1.55; margin:12px 0 20px; font-weight:650; }
+    .enunciado { font-size:1.15rem; line-height:1.58; margin:12px 0 20px; font-weight:750; }
     .alternativas { display:grid; gap:10px; }
-    .alt { width:100%; text-align:left; padding:14px 15px; border-radius:16px; background:rgba(127,127,127,.045); border:1px solid var(--border); font-weight:650; display:grid; grid-template-columns:34px 1fr; align-items:start; }
-    .alt .letter { width:32px; height:32px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; background:var(--soft); color:var(--softText); font-weight:900; }
-    .alt.selected { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
-    .alt.correct { border-color:rgba(34,197,94,.85); background:rgba(34,197,94,.12); }
-    .alt.wrong { border-color:rgba(248,113,113,.85); background:rgba(248,113,113,.12); }
-    .feedback,.empty-state { margin-top:18px; padding:16px; border-radius:18px; border:1px solid var(--border); background:rgba(127,127,127,.05); line-height:1.55; }
+    .alt { width:100%; text-align:left; padding:13px 14px; border-radius:16px; background:rgba(15,23,42,.16); border:1px solid var(--border); font-weight:700; display:grid; grid-template-columns:38px 1fr auto; align-items:center; gap:10px; }
+    .alt .letter { width:34px; height:34px; border-radius:11px; display:inline-flex; align-items:center; justify-content:center; background:rgba(59,130,246,.20); color:#93c5fd; font-weight:950; }
+    .alt .answer-icon { width:24px; height:24px; border-radius:999px; display:grid; place-items:center; color:#fff; font-size:.82rem; }
+    .alt.selected { border-color:rgba(96,165,250,.9); box-shadow:0 0 0 3px rgba(59,130,246,.18), 0 0 28px rgba(59,130,246,.14); }
+    .alt.correct { border-color:rgba(34,197,94,.85); background:rgba(34,197,94,.13); }
+    .alt.correct .answer-icon { background:var(--success); }
+    .alt.wrong { border-color:rgba(239,68,68,.85); background:rgba(239,68,68,.13); }
+    .alt.wrong .answer-icon { background:var(--danger); }
+    .feedback,.empty-state { margin-top:18px; padding:16px; border-radius:18px; border:1px solid var(--border); background:rgba(148,163,184,.07); line-height:1.55; }
     .feedback { display:none; }
     .feedback.show { display:block; }
-    .feedback b { color:var(--primary); }
+    .feedback b { color:#93c5fd; }
     .empty-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
-    .nav { display:flex; justify-content:space-between; gap:10px; margin-top:18px; flex-wrap:wrap; }
-    .group { display:flex; gap:10px; flex-wrap:wrap; }
+    .nav { display:grid; grid-template-columns:1fr minmax(160px,1.35fr) 1fr; gap:10px; margin-top:18px; }
+    .group { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
     .source-list { display:grid; gap:8px; }
-    .source-row { display:grid; gap:4px; padding:10px; border:1px solid var(--border); border-radius:14px; color:var(--muted); font-size:.84rem; }
+    .source-row { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; padding:10px 12px; border:1px solid var(--border); border-radius:14px; color:var(--muted); font-size:.84rem; text-align:left; }
     .source-row.active { color:var(--text); border-color:var(--primary); background:rgba(96,165,250,.12); }
-    .source-row b { color:var(--text); }
-    .question-map { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; max-height:330px; overflow:auto; padding-right:4px; }
-    .qdot { position:relative; border-radius:11px; padding:8px 0; font-size:.78rem; border:1px solid var(--border); background:transparent; color:var(--text); }
+    .source-row b { color:var(--text); overflow-wrap:anywhere; }
+    .source-stats { grid-column:1 / -1; color:var(--muted); font-size:.78rem; }
+    .source-count { align-self:start; border-radius:999px; padding:4px 9px; background:rgba(59,130,246,.20); color:#93c5fd; font-weight:950; }
+    .question-map { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; max-height:520px; overflow:auto; padding-right:4px; }
+    .qdot { position:relative; border-radius:12px; padding:10px 0; min-height:42px; font-size:.86rem; border:1px solid var(--border); background:var(--surface-2); color:var(--text); }
     .qdot.active { outline:3px solid rgba(96,165,250,.24); border-color:var(--primary); background:rgba(96,165,250,.12); }
     .qdot.correct { background:rgba(34,197,94,.16); border-color:rgba(34,197,94,.5); }
-    .qdot.wrong { background:rgba(248,113,113,.16); border-color:rgba(248,113,113,.5); }
-    .qdot.marked:after { content:""; position:absolute; right:5px; top:5px; width:7px; height:7px; border-radius:999px; background:var(--warn); }
+    .qdot.wrong { background:rgba(239,68,68,.16); border-color:rgba(239,68,68,.5); }
+    .qdot.marked:after { content:""; position:absolute; right:5px; top:5px; width:7px; height:7px; border-radius:999px; background:var(--warning); }
     .legend { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
     .legend span { font-size:.78rem; color:var(--muted); }
     .legend i { display:inline-block; width:10px; height:10px; border-radius:4px; margin-right:6px; border:1px solid var(--border); vertical-align:-1px; }
     .meter { height:10px; border:1px solid var(--border); border-radius:999px; overflow:hidden; background:rgba(127,127,127,.12); }
-    .meter div { height:100%; width:0; background:linear-gradient(90deg,var(--ok),var(--warn)); }
+    .meter div { height:100%; width:0; background:linear-gradient(90deg,var(--success),var(--warning)); }
     .review,.history { margin-top:18px; display:none; }
     .review.show,.history.show { display:block; }
     .review-item,.history-item { border:1px solid var(--border); border-radius:16px; padding:14px; margin:10px 0; background:rgba(127,127,127,.04); }
-    .review-item b { color:var(--primary); }
+    .review-item b { color:#93c5fd; }
     .modal-backdrop { position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(2,6,23,.62); z-index:20; }
     .modal-backdrop.show { display:flex; }
-    .modal { width:min(520px,100%); background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:22px; padding:20px; box-shadow:var(--shadow); }
+    .modal { width:min(520px,100%); background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:22px; padding:20px; box-shadow:var(--shadow); }
     .modal-actions { display:grid; gap:10px; margin-top:16px; }
-    .toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(20px); opacity:0; pointer-events:none; background:var(--card); border:1px solid var(--border); border-radius:999px; padding:12px 16px; box-shadow:var(--shadow); z-index:30; transition:.2s; font-weight:800; }
+    .toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(20px); opacity:0; pointer-events:none; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:12px 16px; box-shadow:var(--shadow); z-index:45; transition:.2s; font-weight:800; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-    #disciplineSection,#questionSection { scroll-margin-top:14px; }
-    .mobile-shortcuts { display:none; }
-    .mobile-shortcut { min-height:44px; border:none; border-radius:999px; padding:11px 15px; background:linear-gradient(135deg,var(--primary),var(--primary2)); color:#fff; box-shadow:var(--shadow); }
-    .mobile-shortcut.show { display:inline-flex; }
-    @media(max-width:980px){header,.main,.toolbar{grid-template-columns:1fr}.side{position:relative;top:auto}.stat-grid{grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(10,1fr)}.control-grid .row{grid-template-columns:1fr 1fr}}
-    @media(max-width:620px){.wrap{padding:14px 10px 112px}.hero,.panel,.question-card{border-radius:18px}.hero{min-height:auto;padding:18px}.question-card{padding:16px;min-height:0}.qtop,.nav{flex-direction:column}.stat-grid{grid-template-columns:repeat(2,1fr)}.question-map{grid-template-columns:repeat(5,1fr)}.control-grid .row{grid-template-columns:1fr}.mobile-shortcuts{position:fixed;right:12px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:28;display:flex;pointer-events:none}.mobile-shortcut{display:none;pointer-events:auto;max-width:calc(100vw - 24px);white-space:nowrap}.toast{bottom:calc(78px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}}
+    #heroSection,#disciplineSection,#questionSection,#mapSection,#banksSection,#reviewSection,#profileSection { scroll-margin-top:92px; }
+    .mobile-bottom-nav { display:none; }
+    .bottom-nav-item { min-height:56px; flex:1 1 0; border:0; border-radius:18px; background:transparent; box-shadow:none; flex-direction:column; gap:3px; padding:7px 6px; color:var(--muted); font-size:.74rem; }
+    .bottom-nav-item .nav-ico { font-size:1.3rem; line-height:1; }
+    .quick-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .quick-card { min-height:78px; flex-direction:column; }
+    .footer-note { color:var(--muted); text-align:center; font-size:.85rem; padding:10px 0 0; }
+    @media(max-width:1599px){.app-shell{grid-template-columns:250px minmax(0,1fr) 360px}.toolbar{grid-template-columns:1fr 1fr}.question-map{grid-template-columns:repeat(5,1fr)}}
+    @media(max-width:1180px){.app-shell{grid-template-columns:minmax(0,1fr) 340px}.side-left{position:static;grid-column:1 / -1;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;order:3}.side-right{top:90px;order:2}.content-flow{order:1}.hero-layout{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.top-links{overflow:auto;justify-content:flex-start}.brand-sub{display:none}}
+    @media(max-width:1023px){.topbar-inner{grid-template-columns:auto 1fr auto}.profile-pill{display:none}.app-shell{grid-template-columns:1fr}.side-left,.side-right{position:static;grid-column:auto;grid-template-columns:1fr}.content-flow{order:1}.side-left{order:2}.side-right{order:3}.question-map{grid-template-columns:repeat(10,1fr);max-height:340px}.control-grid .row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:767px){.app-topbar{display:none}.wrap{padding:10px 10px calc(106px + env(safe-area-inset-bottom))}.hero,.panel,.question-card,.discipline-card,.quick-nav{border-radius:20px}.hero{padding:58px 18px 18px}.hero h1{font-size:clamp(1.48rem,6.2vw,2rem)}.hero-theme-btn{display:inline-flex}.hero-layout{gap:16px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{min-height:68px;padding:12px}.toolbar{grid-template-columns:1fr}.quick-nav{position:sticky;top:0;z-index:12;background:rgba(5,11,24,.72);backdrop-filter:blur(14px);border-radius:18px}.discipline-chip{max-width:190px}.qtop{align-items:flex-start}.qmeta-actions{justify-content:flex-start}.nav{grid-template-columns:1fr 1fr}.nav #nextBtn{grid-column:2}.group{grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(5,1fr);max-height:360px}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:4px;min-height:76px;padding:8px;border:1px solid var(--border);border-radius:26px;background:rgba(5,11,24,.84);backdrop-filter:blur(18px);box-shadow:var(--shadow)}[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.88)}.toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}.modal-backdrop{z-index:60}}
+    @media(max-width:480px){.wrap{padding-left:8px;padding-right:8px}.hero{padding:54px 14px 14px}.hero h1{font-size:1.45rem}.hero-theme-btn{right:10px;top:10px;font-size:.86rem}.subtitle{font-size:.88rem}.stat-grid{gap:8px}.stat b{font-size:1.24rem}.quick-nav button{padding:10px 12px}.question-card{padding:15px}.enunciado{font-size:1.02rem}.alt{grid-template-columns:34px 1fr auto;padding:11px}.alt .letter{width:31px;height:31px}.nav{grid-template-columns:1fr}.nav #nextBtn{grid-column:1;grid-row:1}.nav #prevBtn{grid-column:1;grid-row:2}.group{grid-row:3;grid-template-columns:1fr 1fr}.bottom-nav-item{font-size:.69rem}.bottom-nav-item .nav-ico{font-size:1.18rem}}
   </style>
 </head>
 <body data-theme="dark">
-  <div class="wrap">
-    <header>
-      <section class="hero">
-        <h1>Simulador de Legislação Estadual ALE-RR</h1>
-        <p class="subtitle">900 questões em um único HTML, com Constituição Estadual, LC n. 373, História, Geografia e Regimento Interno I a V.</p>
-        <div class="badges" id="heroBadges"></div>
-      </section>
-      <aside class="panel stats">
-        <div class="stat-grid">
-          <div class="stat"><b id="totalStat">900</b><span>questões</span></div>
-          <div class="stat"><b id="answeredStat">0</b><span>respondidas</span></div>
-          <div class="stat"><b id="rightStat">0</b><span>acertos</span></div>
-          <div class="stat"><b id="wrongStat">0</b><span>erros</span></div>
-          <div class="stat"><b id="percentStat">0%</b><span>aproveitamento</span></div>
-          <div class="stat"><b id="timerStat">00:00</b><span>tempo</span></div>
+  <header class="app-topbar" id="appTopbar">
+    <div class="topbar-inner">
+      <div class="brand" aria-label="Simulador ALE-RR">
+        <span class="brand-mark" aria-hidden="true">⚖</span>
+        <div>
+          <div class="brand-title">ALE-RR</div>
+          <div class="brand-sub">Simulador</div>
         </div>
-        <div class="progressbar" style="margin-top:12px"><div id="progressFill"></div></div>
-      </aside>
-    </header>
+      </div>
+      <nav class="top-links" aria-label="Navegação principal">
+        <button type="button" data-scroll-target="heroSection" data-nav-key="home">⌂ Início</button>
+        <button type="button" data-scroll-target="questionSection" data-nav-key="questions">◎ Questão atual</button>
+        <button type="button" data-scroll-target="disciplineSection" data-nav-key="disciplines">▤ Disciplinas</button>
+        <button type="button" data-scroll-target="mapSection" data-nav-key="map">▦ Mapa</button>
+        <button type="button" data-scroll-target="reviewSection" data-nav-key="review">↻ Revisão</button>
+        <button type="button" data-scroll-target="banksSection" data-nav-key="banks">▣ Bancos</button>
+      </nav>
+      <div class="top-actions">
+        <button id="topThemeBtn" type="button">☀ Tema claro</button>
+        <div class="profile-pill"><span class="avatar">E</span><span>Estudante</span></div>
+      </div>
+    </div>
+  </header>
 
-    <section class="toolbar" id="disciplineSection">
-      <input id="search" placeholder="Buscar por palavra-chave...">
-      <select id="bankFilter"></select>
-      <select id="themeFilter"></select>
-      <select id="statusFilter"></select>
-    </section>
-
-    <main class="main">
-      <aside class="side">
-        <section class="panel">
+  <div class="wrap">
+    <main class="app-shell">
+      <aside class="side-left">
+        <section class="panel controls-panel" id="reviewSection">
           <h2>Controles</h2>
           <div class="control-grid">
-            <div class="row">
-              <button id="themeBtn">🌙 Tema escuro</button>
-              <button id="shuffleBtn">Embaralhar questões</button>
-            </div>
+            <button id="themeBtn">🌙 Tema escuro</button>
+            <button id="shuffleBtn">Embaralhar questões</button>
             <button id="wrongReviewBtn">Revisar erradas (0)</button>
             <button id="saveHistoryBtn" class="primary">Salvar sessão no histórico</button>
             <div class="row">
@@ -150,8 +195,13 @@
           </div>
         </section>
 
-        <section class="panel">
-          <h2>Cache local</h2>
+        <section class="panel" id="banksSection">
+          <h2>Bancos de questões</h2>
+          <div class="source-list" id="bankProgress"></div>
+        </section>
+
+        <section class="panel" id="profileSection">
+          <h2>Dados locais</h2>
           <div class="mini">Uso do navegador: <b id="browserUsage">Indisponível</b></div>
           <div class="meter"><div id="browserMeter"></div></div>
           <div class="mini">Estado salvo: <b id="stateUsage">0 KB</b> / <span id="stateLimit">3072 KB</span></div>
@@ -161,55 +211,108 @@
             <button id="compactHistoryBtn">Compactar histórico</button>
           </div>
         </section>
-
-        <section class="panel">
-          <h2>Bancos</h2>
-          <div class="source-list" id="bankProgress"></div>
-        </section>
-
-        <section class="panel">
-          <h2>Mapa das questões</h2>
-          <p class="mini" id="mapInfo"></p>
-          <div class="question-map" id="questionMap"></div>
-          <div class="legend">
-            <span><i></i>não respondida</span>
-            <span><i style="background:rgba(34,197,94,.24)"></i>correta</span>
-            <span><i style="background:rgba(248,113,113,.24)"></i>errada</span>
-            <span><i style="background:var(--warn)"></i>marcada</span>
-          </div>
-        </section>
       </aside>
 
-      <section>
+      <section class="content-flow">
+        <section class="hero" id="heroSection">
+          <button id="mobileHeroThemeBtn" type="button" class="hero-theme-btn">☀ Tema claro</button>
+          <div class="hero-layout">
+            <div>
+              <div class="eyebrow">Simulador ALE-RR</div>
+              <h1>Simulador de Legislação Estadual ALE-RR</h1>
+              <p class="subtitle">900 questões em um único HTML, com Constituição Estadual, LC n. 373, História, Geografia e Regimento Interno I a V.</p>
+              <div class="badges" id="heroBadges"></div>
+            </div>
+            <aside class="stats" aria-label="Estatísticas gerais">
+              <div class="stat-grid">
+                <div class="stat"><b id="totalStat">900</b><span>questões</span></div>
+                <div class="stat"><b id="answeredStat">0</b><span>respondidas</span></div>
+                <div class="stat"><b id="rightStat">0</b><span>acertos</span></div>
+                <div class="stat"><b id="wrongStat">0</b><span>erros</span></div>
+                <div class="stat"><b id="percentStat">0%</b><span>aproveitamento</span></div>
+                <div class="stat"><b id="timerStat">00:00</b><span>tempo</span></div>
+              </div>
+              <div class="progressbar"><div id="progressFill"></div></div>
+            </aside>
+          </div>
+        </section>
+
+        <nav class="quick-nav" aria-label="Atalhos rápidos">
+          <button type="button" data-scroll-target="questionSection">◎ Questão atual</button>
+          <button type="button" data-scroll-target="disciplineSection">▽ Filtros</button>
+          <button type="button" data-scroll-target="mapSection">▦ Mapa</button>
+          <button type="button" data-scroll-target="banksSection">▣ Bancos</button>
+        </nav>
+
+        <section class="discipline-card" id="disciplineSection">
+          <h2>Disciplinas e filtros</h2>
+          <div id="disciplineChips" class="discipline-chips" aria-label="Chips de disciplinas"></div>
+          <div class="toolbar">
+            <div class="search-wrap"><input id="search" placeholder="Buscar por palavra-chave..." aria-label="Buscar por palavra-chave"></div>
+            <select id="bankFilter" aria-label="Filtrar por disciplina"></select>
+            <select id="themeFilter" aria-label="Filtrar por tema"></select>
+            <select id="statusFilter" aria-label="Filtrar por status"></select>
+          </div>
+        </section>
+
         <div id="reviewModeBanner" class="mode-banner">
           <span id="reviewModeText">Modo revisão de erradas ativo</span>
           <button id="exitReviewBtn">Sair da revisão</button>
         </div>
+
         <article class="question-card" id="questionSection">
           <div class="qtop">
             <div>
               <div class="topic" id="topic">Tema</div>
               <div class="qid" id="questionMeta">Questão 1 de 900</div>
             </div>
-            <div class="badge" id="statusBadge">Não respondida</div>
+            <div class="qmeta-actions">
+              <div class="badge" id="statusBadge">Não respondida</div>
+              <button id="markBtn" type="button">Marcar revisão</button>
+            </div>
           </div>
           <div class="enunciado" id="statement"></div>
           <div class="alternativas" id="choices"></div>
           <div class="feedback" id="feedback"></div>
           <div class="nav">
             <button id="prevBtn">Anterior</button>
+            <button id="nextBtn" class="primary">Próxima</button>
             <div class="group">
-              <button id="markBtn">Marcar revisão</button>
-              <button id="clearOneBtn">Limpar esta</button>
               <button id="historyBtn">Histórico</button>
               <button id="reviewListBtn">Lista de erradas</button>
+              <button id="clearOneBtn">Limpar esta</button>
             </div>
-            <button id="nextBtn" class="primary">Próxima</button>
           </div>
         </article>
+
         <section id="reviewList" class="review panel"></section>
         <section id="historyPanel" class="history panel"></section>
+        <div class="footer-note">⚖ Simulador ALE-RR · estudo offline em HTML único</div>
       </section>
+
+      <aside class="side-right">
+        <section class="panel" id="mapSection">
+          <h2>Mapa das questões</h2>
+          <p class="mini" id="mapInfo"></p>
+          <div class="question-map" id="questionMap"></div>
+          <div class="legend">
+            <span><i></i>não respondida</span>
+            <span><i style="background:rgba(34,197,94,.24)"></i>correta</span>
+            <span><i style="background:rgba(239,68,68,.24)"></i>errada</span>
+            <span><i style="background:var(--warning)"></i>marcada</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Atalhos rápidos</h2>
+          <div class="quick-cards">
+            <button class="quick-card" type="button" data-scroll-target="questionSection">☆ Questão atual</button>
+            <button class="quick-card" type="button" data-scroll-target="reviewSection">⚑ Revisão</button>
+            <button class="quick-card" type="button" data-scroll-target="mapSection">▦ Mapa</button>
+            <button class="quick-card" type="button" data-scroll-target="profileSection">◴ Mais</button>
+          </div>
+        </section>
+      </aside>
     </main>
   </div>
 
@@ -226,9 +329,12 @@
       </div>
     </div>
   </div>
-  <nav id="mobileShortcuts" class="mobile-shortcuts" aria-label="Atalhos do simulador">
-    <button id="mobileToDiscipline" type="button" class="mobile-shortcut">Disciplinas</button>
-    <button id="mobileToQuestions" type="button" class="mobile-shortcut">Questões</button>
+  <nav id="mobileShortcuts" class="mobile-bottom-nav" aria-label="Atalhos do simulador">
+    <button id="mobileToHome" type="button" class="bottom-nav-item" data-scroll-target="heroSection" data-nav-key="home"><span class="nav-ico">⌂</span><span>Início</span></button>
+    <button id="mobileToQuestions" type="button" class="bottom-nav-item" data-scroll-target="questionSection" data-nav-key="questions"><span class="nav-ico">◎</span><span>Questões</span></button>
+    <button id="mobileToDiscipline" type="button" class="bottom-nav-item" data-scroll-target="disciplineSection" data-nav-key="disciplines"><span class="nav-ico">▤</span><span>Disciplinas</span></button>
+    <button id="mobileToReview" type="button" class="bottom-nav-item" data-scroll-target="reviewSection" data-nav-key="review"><span class="nav-ico">↻</span><span>Revisão</span></button>
+    <button id="mobileToMore" type="button" class="bottom-nav-item" data-scroll-target="profileSection" data-nav-key="more"><span class="nav-ico">☰</span><span>Mais</span></button>
   </nav>
   <div id="toast" class="toast"></div>
 
@@ -266,7 +372,7 @@ const bytesOf = (value) => new Blob([typeof value === "string" ? value : JSON.st
 const formatBytes = (bytes) => !Number.isFinite(bytes) ? "Indisponível" : bytes >= 1073741824 ? (bytes / 1073741824).toFixed(2) + " GB" : bytes >= 1048576 ? (bytes / 1048576).toFixed(2) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB";
 
 function cacheElements() {
-  ["heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","questionSection","mobileShortcuts","mobileToDiscipline","mobileToQuestions","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast"].forEach(id => el[id] = $(id));
+  ["appTopbar","heroSection","heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","disciplineChips","questionSection","mapSection","banksSection","reviewSection","profileSection","mobileShortcuts","mobileToHome","mobileToDiscipline","mobileToQuestions","mobileToReview","mobileToMore","topThemeBtn","mobileHeroThemeBtn","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast"].forEach(id => el[id] = $(id));
 }
 
 function getPersistableState() {
@@ -328,7 +434,10 @@ function saveState() {
 function setTheme(theme) {
   appState.theme = theme;
   document.body.dataset.theme = theme;
-  el.themeBtn.textContent = theme === "dark" ? "☀ Tema claro" : "🌙 Tema escuro";
+  const label = theme === "dark" ? "☀ Tema claro" : "🌙 Tema escuro";
+  if (el.themeBtn) el.themeBtn.textContent = label;
+  if (el.topThemeBtn) el.topThemeBtn.textContent = label;
+  if (el.mobileHeroThemeBtn) el.mobileHeroThemeBtn.textContent = label;
 }
 
 function calculateStats() {
@@ -378,6 +487,7 @@ function render() {
   applyFilters({ resetIndex: false });
   renderHeaderStats();
   renderFilters();
+  renderDisciplineChips();
   renderReviewMode();
   renderQuestionArea();
   renderBankProgress();
@@ -385,6 +495,7 @@ function render() {
   renderButtonsState();
   renderCacheInfo();
   updateMobileShortcuts();
+  updateActiveNav();
 }
 
 function renderHeaderStats() {
@@ -418,6 +529,26 @@ function countByStatus(status) {
     return '<option value="' + status + '">' + STATUS_LABELS[status] + ' (' + count + ')</option>';
   }).join("");
   el.statusFilter.value = appState.filters.status;
+}
+
+function renderDisciplineChips() {
+  if (!el.disciplineChips) return;
+  const chips = [{ key: "all", label: "Todas as disciplinas", count: appState.questions.length }, ...BANKS];
+  el.disciplineChips.innerHTML = chips.map(bank => {
+    const active = appState.filters.bank === bank.key ? " active" : "";
+    return '<button type="button" class="discipline-chip' + active + '" data-bank-chip="' + escapeHtml(bank.key) + '"><span>' + escapeHtml(bank.label) + '</span><span class="mini">' + bank.count + ' questões</span></button>';
+  }).join("");
+  document.querySelectorAll("[data-bank-chip]").forEach(btn => btn.addEventListener("click", () => {
+    appState.reviewMode = null;
+    appState.mode = "normal";
+    appState.filters.bank = btn.dataset.bankChip;
+    appState.filters.theme = "all";
+    appState.currentIndex = 0;
+    applyFilters();
+    showToast(appState.filters.bank === "all" ? "Todas as disciplinas selecionadas." : "Disciplina selecionada.");
+    saveState();
+    render();
+  }));
 }
 
 function rebuildThemeOptions() {
@@ -484,7 +615,8 @@ function renderQuestionArea() {
     if (answer?.selected === letter) cls += " selected";
     if (answer && letter === question.correta) cls += " correct";
     if (answer && answer.selected === letter && letter !== question.correta) cls += " wrong";
-    return '<button class="' + cls + '" data-answer="' + letter + '"><span class="letter">' + letter + '</span><span>' + escapeHtml(question.alternativas[letter]) + '</span></button>';
+    const icon = answer && letter === question.correta ? "✓" : (answer && answer.selected === letter && letter !== question.correta ? "×" : "");
+    return '<button class="' + cls + '" data-answer="' + letter + '"><span class="letter">' + letter + '</span><span>' + escapeHtml(question.alternativas[letter]) + '</span><span class="answer-icon">' + icon + '</span></button>';
   }).join("");
   document.querySelectorAll("[data-answer]").forEach(btn => btn.addEventListener("click", () => answerQuestion(btn.dataset.answer)));
   if (answer) {
@@ -503,8 +635,19 @@ function renderBankProgress() {
     const correct = items.filter(q => appState.answers[q.uid]?.isCorrect).length;
     const wrong = items.filter(q => appState.answers[q.uid]?.isCorrect === false).length;
     const active = appState.filters.bank === bank.key ? " active" : "";
-    return '<div class="source-row' + active + '"><b>' + escapeHtml(bank.label) + '</b><span>Respondidas: ' + answered + ' / ' + items.length + '</span><span>Acertos: ' + correct + ' · Erros: ' + wrong + '</span></div>';
+    return '<button type="button" class="source-row' + active + '" data-bank-row="' + escapeHtml(bank.key) + '"><b>' + escapeHtml(bank.label) + '</b><span class="source-count">' + items.length + '</span><span class="source-stats">Respondidas: ' + answered + ' / ' + items.length + ' · Acertos: ' + correct + ' · Erros: ' + wrong + '</span></button>';
   }).join("");
+  document.querySelectorAll("[data-bank-row]").forEach(btn => btn.addEventListener("click", () => {
+    appState.reviewMode = null;
+    appState.mode = "normal";
+    appState.filters.bank = btn.dataset.bankRow;
+    appState.filters.theme = "all";
+    appState.currentIndex = 0;
+    applyFilters();
+    showToast("Banco selecionado.");
+    saveState();
+    render();
+  }));
 }
 
 function renderQuestionMap() {
@@ -518,6 +661,7 @@ function renderQuestionMap() {
     appState.currentIndex = Number(btn.dataset.mapIndex);
     render();
     saveState();
+    if (window.matchMedia("(max-width: 767px)").matches) scrollToSection("questionSection");
   }));
 }
 
@@ -760,32 +904,37 @@ function updateTimer() {
   el.timerStat.textContent = minutes + ":" + seconds;
 }
 
-function showOnlyMobileShortcut(target) {
-  if (!el.mobileToDiscipline || !el.mobileToQuestions) return;
-  el.mobileToDiscipline.classList.toggle("show", target === "discipline");
-  el.mobileToQuestions.classList.toggle("show", target === "questions");
+function scrollToSection(id) {
+  const target = el[id] || document.getElementById(id);
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function setActiveNav(key) {
+  document.querySelectorAll("[data-nav-key]").forEach(item => item.classList.toggle("active", item.dataset.navKey === key));
+}
+
+function updateActiveNav() {
+  const sections = [
+    ["home", el.heroSection],
+    ["disciplines", el.disciplineSection],
+    ["questions", el.questionSection],
+    ["review", el.reviewSection],
+    ["map", el.mapSection],
+    ["banks", el.banksSection],
+    ["more", el.profileSection]
+  ].filter(([, node]) => node);
+  const focus = (window.innerHeight || document.documentElement.clientHeight) * 0.36;
+  let active = "home";
+  for (const [key, node] of sections) {
+    const rect = node.getBoundingClientRect();
+    if (rect.top <= focus && rect.bottom >= 72) active = key;
+  }
+  setActiveNav(active);
 }
 
 function updateMobileShortcuts() {
-  if (!el.mobileToDiscipline || !el.mobileToQuestions || !window.matchMedia("(max-width: 620px)").matches) {
-    showOnlyMobileShortcut(null);
-    return;
-  }
-  const questionRect = el.questionSection.getBoundingClientRect();
-  const disciplineRect = el.disciplineSection.getBoundingClientRect();
-  const height = window.innerHeight || document.documentElement.clientHeight;
-  const focusLine = height * 0.42;
-  const questionActive = questionRect.top <= focusLine && questionRect.bottom >= focusLine;
-  const disciplineVisible = disciplineRect.top <= focusLine && disciplineRect.bottom >= 0;
-  if (questionActive) {
-    showOnlyMobileShortcut("discipline");
-    return;
-  }
-  if (disciplineVisible || questionRect.top > focusLine) {
-    showOnlyMobileShortcut("questions");
-    return;
-  }
-  showOnlyMobileShortcut("discipline");
+  updateActiveNav();
 }
 
 function requestMobileShortcutUpdate() {
@@ -794,8 +943,10 @@ function requestMobileShortcutUpdate() {
 }
 
 function setupMobileShortcuts() {
-  el.mobileToDiscipline.addEventListener("click", () => el.disciplineSection.scrollIntoView({ behavior: "smooth", block: "start" }));
-  el.mobileToQuestions.addEventListener("click", () => el.questionSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  document.querySelectorAll("[data-scroll-target]").forEach(btn => btn.addEventListener("click", () => {
+    scrollToSection(btn.dataset.scrollTarget);
+    if (btn.dataset.navKey) setActiveNav(btn.dataset.navKey);
+  }));
   window.addEventListener("scroll", requestMobileShortcutUpdate, { passive: true });
   window.addEventListener("resize", requestMobileShortcutUpdate);
   requestMobileShortcutUpdate();
@@ -806,7 +957,10 @@ function bindEvents() {
   el.bankFilter.addEventListener("change", () => { appState.filters.bank = el.bankFilter.value; appState.filters.theme = "all"; appState.currentIndex = 0; applyFilters(); saveState(); render(); });
   el.themeFilter.addEventListener("change", () => { appState.filters.theme = el.themeFilter.value; appState.currentIndex = 0; applyFilters(); saveState(); render(); });
   el.statusFilter.addEventListener("change", () => { appState.reviewMode = null; appState.mode = el.statusFilter.value === "unanswered" ? "unanswered" : (el.statusFilter.value === "correct" || el.statusFilter.value === "wrong" ? "answered" : "normal"); appState.filters.status = el.statusFilter.value; appState.currentIndex = 0; applyFilters(); saveState(); render(); });
-  el.themeBtn.addEventListener("click", () => { setTheme(appState.theme === "dark" ? "light" : "dark"); showToast(appState.theme === "dark" ? "Tema escuro ativado." : "Tema claro ativado."); saveState(); render(); });
+  const toggleTheme = () => { setTheme(appState.theme === "dark" ? "light" : "dark"); showToast(appState.theme === "dark" ? "Tema escuro ativado." : "Tema claro ativado."); saveState(); render(); };
+  el.themeBtn.addEventListener("click", toggleTheme);
+  if (el.topThemeBtn) el.topThemeBtn.addEventListener("click", toggleTheme);
+  if (el.mobileHeroThemeBtn) el.mobileHeroThemeBtn.addEventListener("click", toggleTheme);
   el.shuffleBtn.addEventListener("click", shuffleQuestions);
   el.wrongReviewBtn.addEventListener("click", startWrongReview);
   el.exitReviewBtn.addEventListener("click", exitReviewMode);
@@ -832,7 +986,7 @@ function bindEvents() {
 function boot() {
   cacheElements();
   el.heroBadges.innerHTML = BANKS.map(bank => '<span class="badge">' + escapeHtml(bank.label) + ': ' + bank.count + '</span>').join("");
-  el.bankFilter.innerHTML = '<option value="all">Disciplina</option>' + BANKS.map(bank => '<option value="' + escapeHtml(bank.key) + '">' + escapeHtml(bank.label) + '</option>').join("");
+  el.bankFilter.innerHTML = '<option value="all">Todas as disciplinas</option>' + BANKS.map(bank => '<option value="' + escapeHtml(bank.key) + '">' + escapeHtml(bank.label) + '</option>').join("");
   loadState();
   setTheme(appState.theme);
   bindEvents();
