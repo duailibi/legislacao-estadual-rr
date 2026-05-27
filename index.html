@@ -96,8 +96,12 @@
     .modal-actions { display:grid; gap:10px; margin-top:16px; }
     .toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(20px); opacity:0; pointer-events:none; background:var(--card); border:1px solid var(--border); border-radius:999px; padding:12px 16px; box-shadow:var(--shadow); z-index:30; transition:.2s; font-weight:800; }
     .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    #disciplineSection,#questionSection { scroll-margin-top:14px; }
+    .mobile-shortcuts { display:none; }
+    .mobile-shortcut { min-height:44px; border:none; border-radius:999px; padding:11px 15px; background:linear-gradient(135deg,var(--primary),var(--primary2)); color:#fff; box-shadow:var(--shadow); }
+    .mobile-shortcut.show { display:inline-flex; }
     @media(max-width:980px){header,.main,.toolbar{grid-template-columns:1fr}.side{position:relative;top:auto}.stat-grid{grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(10,1fr)}.control-grid .row{grid-template-columns:1fr 1fr}}
-    @media(max-width:620px){.wrap{padding:14px 10px 38px}.hero,.panel,.question-card{border-radius:18px}.hero{min-height:auto;padding:18px}.question-card{padding:16px;min-height:0}.qtop,.nav{flex-direction:column}.stat-grid{grid-template-columns:repeat(2,1fr)}.question-map{grid-template-columns:repeat(5,1fr)}.control-grid .row{grid-template-columns:1fr}}
+    @media(max-width:620px){.wrap{padding:14px 10px 112px}.hero,.panel,.question-card{border-radius:18px}.hero{min-height:auto;padding:18px}.question-card{padding:16px;min-height:0}.qtop,.nav{flex-direction:column}.stat-grid{grid-template-columns:repeat(2,1fr)}.question-map{grid-template-columns:repeat(5,1fr)}.control-grid .row{grid-template-columns:1fr}.mobile-shortcuts{position:fixed;right:12px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:28;display:flex;pointer-events:none}.mobile-shortcut{display:none;pointer-events:auto;max-width:calc(100vw - 24px);white-space:nowrap}.toast{bottom:calc(78px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}}
   </style>
 </head>
 <body data-theme="dark">
@@ -121,7 +125,7 @@
       </aside>
     </header>
 
-    <section class="toolbar">
+    <section class="toolbar" id="disciplineSection">
       <input id="search" placeholder="Buscar por palavra-chave...">
       <select id="bankFilter"></select>
       <select id="themeFilter"></select>
@@ -181,7 +185,7 @@
           <span id="reviewModeText">Modo revisão de erradas ativo</span>
           <button id="exitReviewBtn">Sair da revisão</button>
         </div>
-        <article class="question-card">
+        <article class="question-card" id="questionSection">
           <div class="qtop">
             <div>
               <div class="topic" id="topic">Tema</div>
@@ -222,6 +226,10 @@
       </div>
     </div>
   </div>
+  <nav id="mobileShortcuts" class="mobile-shortcuts" aria-label="Atalhos do simulador">
+    <button id="mobileToDiscipline" type="button" class="mobile-shortcut">Disciplinas</button>
+    <button id="mobileToQuestions" type="button" class="mobile-shortcut">Questões</button>
+  </nav>
   <div id="toast" class="toast"></div>
 
   <script>
@@ -258,7 +266,7 @@ const bytesOf = (value) => new Blob([typeof value === "string" ? value : JSON.st
 const formatBytes = (bytes) => !Number.isFinite(bytes) ? "Indisponível" : bytes >= 1073741824 ? (bytes / 1073741824).toFixed(2) + " GB" : bytes >= 1048576 ? (bytes / 1048576).toFixed(2) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB";
 
 function cacheElements() {
-  ["heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast"].forEach(id => el[id] = $(id));
+  ["heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","questionSection","mobileShortcuts","mobileToDiscipline","mobileToQuestions","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast"].forEach(id => el[id] = $(id));
 }
 
 function getPersistableState() {
@@ -376,6 +384,7 @@ function render() {
   renderQuestionMap();
   renderButtonsState();
   renderCacheInfo();
+  updateMobileShortcuts();
 }
 
 function renderHeaderStats() {
@@ -751,6 +760,47 @@ function updateTimer() {
   el.timerStat.textContent = minutes + ":" + seconds;
 }
 
+function showOnlyMobileShortcut(target) {
+  if (!el.mobileToDiscipline || !el.mobileToQuestions) return;
+  el.mobileToDiscipline.classList.toggle("show", target === "discipline");
+  el.mobileToQuestions.classList.toggle("show", target === "questions");
+}
+
+function updateMobileShortcuts() {
+  if (!el.mobileToDiscipline || !el.mobileToQuestions || !window.matchMedia("(max-width: 620px)").matches) {
+    showOnlyMobileShortcut(null);
+    return;
+  }
+  const questionRect = el.questionSection.getBoundingClientRect();
+  const disciplineRect = el.disciplineSection.getBoundingClientRect();
+  const height = window.innerHeight || document.documentElement.clientHeight;
+  const focusLine = height * 0.42;
+  const questionActive = questionRect.top <= focusLine && questionRect.bottom >= focusLine;
+  const disciplineVisible = disciplineRect.top <= focusLine && disciplineRect.bottom >= 0;
+  if (questionActive) {
+    showOnlyMobileShortcut("discipline");
+    return;
+  }
+  if (disciplineVisible || questionRect.top > focusLine) {
+    showOnlyMobileShortcut("questions");
+    return;
+  }
+  showOnlyMobileShortcut("discipline");
+}
+
+function requestMobileShortcutUpdate() {
+  cancelAnimationFrame(requestMobileShortcutUpdate.frame);
+  requestMobileShortcutUpdate.frame = requestAnimationFrame(updateMobileShortcuts);
+}
+
+function setupMobileShortcuts() {
+  el.mobileToDiscipline.addEventListener("click", () => el.disciplineSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  el.mobileToQuestions.addEventListener("click", () => el.questionSection.scrollIntoView({ behavior: "smooth", block: "start" }));
+  window.addEventListener("scroll", requestMobileShortcutUpdate, { passive: true });
+  window.addEventListener("resize", requestMobileShortcutUpdate);
+  requestMobileShortcutUpdate();
+}
+
 function bindEvents() {
   el.search.addEventListener("input", () => { appState.filters.search = el.search.value; appState.currentIndex = 0; applyFilters(); saveState(); render(); });
   el.bankFilter.addEventListener("change", () => { appState.filters.bank = el.bankFilter.value; appState.filters.theme = "all"; appState.currentIndex = 0; applyFilters(); saveState(); render(); });
@@ -786,6 +836,7 @@ function boot() {
   loadState();
   setTheme(appState.theme);
   bindEvents();
+  setupMobileShortcuts();
   applyFilters({ resetIndex: false });
   render();
   updateTimer();
