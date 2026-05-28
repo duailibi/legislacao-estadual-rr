@@ -194,7 +194,7 @@
     body.focused-active #brandModal.modal-backdrop { z-index:100; }
     body.focused-active #brandModal .modal { box-shadow:0 30px 80px rgba(0,0,0,.6); }
     .focused-modal-backdrop.show { display:flex; align-items:stretch; justify-content:center; }
-    .focused-modal { position:relative; width:min(920px,100%); max-height:calc(100vh - 40px); display:grid; grid-template-rows:auto 1fr auto; background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
+    .focused-modal { position:relative; width:min(1060px,100%); max-height:calc(100vh - 40px); display:grid; grid-template-rows:auto minmax(0,1fr) auto; background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
     .focused-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.08)); }
     .focused-meta { display:flex; flex-direction:column; gap:2px; min-width:0; }
     .focused-meta b { color:#93c5fd; font-size:.84rem; text-transform:uppercase; letter-spacing:.04em; }
@@ -202,11 +202,14 @@
     .focused-controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
     .focused-controls #focusedTimer { font-weight:950; font-size:1.05rem; color:#93c5fd; padding:6px 12px; border:1px solid var(--border); border-radius:999px; background:rgba(15,23,42,.16); }
     .focused-question { padding:24px; overflow-y:auto; display:flex; flex-direction:column; gap:14px; }
-    .focused-question .enunciado { margin:0; }
+    .focused-question .enunciado { margin:0; font-size:1.08rem; line-height:1.48; }
+    .focused-question .alt { font-size:.95rem; line-height:1.34; }
     .focused-question .alternativas { display:grid; gap:10px; }
     .focused-question .feedback { display:block; margin-top:4px; padding:14px 16px; border-radius:16px; border:1px solid var(--border); background:rgba(148,163,184,.07); line-height:1.55; }
     .focused-nav { padding:16px 20px; border-top:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:10px; background:var(--surface-2); }
-    .focused-paused { position:absolute; inset:0; background:rgba(2,6,23,.92); display:grid; place-items:center; gap:14px; z-index:5; text-align:center; padding:24px; }
+    .focused-paused { position:absolute; inset:0; background:rgba(2,6,23,.92); display:none; place-items:center; gap:14px; z-index:5; text-align:center; padding:24px; }
+    .focused-paused.is-visible { display:grid; }
+    .focused-paused[hidden] { display:none !important; }
     .focused-paused h3 { margin:0; font-size:1.4rem; color:#93c5fd; }
     .focused-paused p { margin:0; color:var(--muted); }
     .focused-paused button { min-width:200px; }
@@ -219,8 +222,8 @@
     @media(min-width:1280px){.app-shell{grid-template-areas:"left main right";grid-template-columns:280px minmax(0,1fr) 360px}}
     @media(max-width:1279px){.app-shell{grid-template-areas:"left main" "right right";grid-template-columns:260px minmax(0,1fr)}.side-left{grid-area:left;position:static}.content-flow{grid-area:main}.side-right{grid-area:right;position:static;display:grid;grid-template-columns:1fr 1fr;gap:16px}.side-right .tips-panel{grid-column:1 / -1}.hero-layout{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.top-links{overflow:auto;justify-content:flex-start}.brand-sub{display:none}}
     @media(max-width:1023px){.topbar-inner{grid-template-columns:auto 1fr auto}.profile-pill{display:none}.app-shell{grid-template-areas:"main" "right" "left";grid-template-columns:1fr;padding:16px}.side-left,.side-right{position:static;grid-template-columns:1fr}.content-flow{grid-area:main}.side-right{grid-area:right}.side-left{grid-area:left}.question-map{grid-template-columns:repeat(10,minmax(38px,1fr));max-height:340px}.control-grid .row{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:767px){.app-topbar{display:none}.app-shell{display:flex;flex-direction:column;gap:16px;padding:12px;padding-bottom:calc(106px + env(safe-area-inset-bottom))}.content-flow{order:1}.side-right{order:2}.side-left{order:3}.hero,.panel,.question-card,.discipline-card,.quick-nav{border-radius:20px}.hero{padding:58px 18px 18px}.hero h1{font-size:clamp(1.48rem,6.2vw,2rem)}.hero-theme-btn{display:inline-flex}.hero-layout{gap:16px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{min-height:68px;padding:12px}.toolbar{grid-template-columns:1fr}.quick-nav{position:sticky;top:0;z-index:12;background:rgba(5,11,24,.72);backdrop-filter:blur(14px);border-radius:18px}.discipline-chip{max-width:190px}.qtop{align-items:flex-start}.qmeta-actions{justify-content:flex-start}.nav{grid-template-columns:1fr 1fr}.nav #nextBtn{grid-column:2}.group{grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(5,minmax(44px,1fr));max-height:360px}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:4px;min-height:76px;padding:8px;border:1px solid var(--border);border-radius:26px;background:rgba(5,11,24,.84);backdrop-filter:blur(18px);box-shadow:var(--shadow)}[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.88)}.toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}.modal-backdrop{z-index:100}}
-    @media(max-width:767px){.focused-modal-backdrop{padding:0}.focused-modal{max-height:100vh; border-radius:0; width:100%}.focused-question{padding:18px}.focused-nav{grid-template-columns:1fr 1fr}}
+    @media(max-width:767px){.app-topbar{display:none}.app-shell{display:flex;flex-direction:column;gap:14px;padding:10px;padding-bottom:calc(98px + env(safe-area-inset-bottom))}.content-flow{order:1}.side-right{order:2}.side-left{order:3}.hero,.panel,.question-card,.discipline-card,.quick-nav{border-radius:18px}.hero{padding:50px 16px 16px}.hero h1{font-size:clamp(1.34rem,5.4vw,1.74rem);line-height:1.08}.hero-theme-btn{display:inline-flex}.subtitle{font-size:.88rem;line-height:1.42}.hero-layout{gap:14px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat{min-height:62px;padding:10px}.stat b{font-size:1.22rem}.stat span{font-size:.76rem}.toolbar{grid-template-columns:1fr}.quick-nav{position:sticky;top:0;z-index:12;background:rgba(5,11,24,.72);backdrop-filter:blur(14px);border-radius:16px}.quick-nav button{font-size:.84rem;padding:9px 11px}.discipline-chip{max-width:190px}.qtop{align-items:flex-start}.qmeta-actions{justify-content:flex-start}.nav{grid-template-columns:1fr 1fr}.nav #nextBtn{grid-column:2}.group{grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(5,minmax(44px,1fr));max-height:360px}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:4px;min-height:74px;padding:8px;border:1px solid var(--border);border-radius:24px;background:rgba(5,11,24,.84);backdrop-filter:blur(18px);box-shadow:var(--shadow)}[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.88)}.toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}.modal-backdrop{z-index:100}}
+    @media(max-width:767px){.focused-modal-backdrop{padding:0}.focused-modal{width:100%;height:100dvh;max-height:none;border-radius:0;border-left:0;border-right:0}.focused-header{padding:13px 14px;gap:10px}.focused-controls{display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;gap:8px}.focused-controls #focusedTimer{display:grid;place-items:center}.focused-controls button{font-size:.86rem;padding:9px 8px}.focused-question{padding:16px;gap:12px}.focused-question .enunciado{font-size:1rem}.focused-question .alt{font-size:.9rem;padding:10px}.focused-nav{grid-template-columns:1fr 1fr;padding:12px 14px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}.focused-paused{padding:18px}.focused-paused h3{font-size:1.25rem}.focused-paused button{min-width:0;width:min(320px,100%)}}
     @media(max-width:480px){.wrap{padding-left:8px;padding-right:8px}.hero{padding:54px 14px 14px}.hero h1{font-size:1.45rem}.hero-theme-btn{right:10px;top:10px;font-size:.86rem}.subtitle{font-size:.88rem}.stat-grid{gap:8px}.stat b{font-size:1.24rem}.quick-nav button{padding:10px 12px}.question-card{padding:15px}.enunciado{font-size:1.02rem}.alt{grid-template-columns:34px 1fr auto;padding:11px}.alt .letter{width:31px;height:31px}.nav{grid-template-columns:1fr}.nav #nextBtn{grid-column:1;grid-row:1}.nav #prevBtn{grid-column:1;grid-row:2}.group{grid-row:3;grid-template-columns:1fr 1fr}.bottom-nav-item{font-size:.69rem}.bottom-nav-item .nav-ico{font-size:1.18rem}}
   </style>
 </head>
@@ -333,7 +336,7 @@
             <select id="themeFilter" aria-label="Filtrar por tema"></select>
             <select id="statusFilter" aria-label="Filtrar por status"></select>
           </div>
-          <button id="startFocusedBtn" class="primary focused-trigger" type="button">▶ Iniciar simulado focado</button>
+          <button id="startFocusedBtn" class="primary focused-trigger" type="button">⛶ Focar simulado</button>
         </section>
 
         <div id="reviewModeBanner" class="mode-banner">
@@ -420,8 +423,8 @@
     <button id="mobileToHome" type="button" class="bottom-nav-item" data-scroll-target="heroSection" data-nav-key="home"><span class="nav-ico">⌂</span><span>Início</span></button>
     <button id="mobileToQuestions" type="button" class="bottom-nav-item" data-scroll-target="questionSection" data-nav-key="questions"><span class="nav-ico">◎</span><span>Questões</span></button>
     <button id="mobileToDiscipline" type="button" class="bottom-nav-item" data-scroll-target="disciplineSection" data-nav-key="disciplines"><span class="nav-ico">▤</span><span>Disciplinas</span></button>
+    <button id="mobileToMap" type="button" class="bottom-nav-item" data-scroll-target="mapSection" data-nav-key="map"><span class="nav-ico">▦</span><span>Mapa</span></button>
     <button id="mobileToReview" type="button" class="bottom-nav-item" data-scroll-target="reviewSection" data-nav-key="review"><span class="nav-ico">↻</span><span>Revisão</span></button>
-    <button id="mobileToMore" type="button" class="bottom-nav-item" data-scroll-target="profileSection" data-nav-key="more"><span class="nav-ico">☰</span><span>Mais</span></button>
   </nav>
   <div id="focusedModal" class="focused-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="focused-modal">
@@ -441,10 +444,11 @@
         <button id="focusedPrevBtn" type="button">← Anterior</button>
         <button id="focusedNextBtn" class="primary" type="button">Próxima →</button>
       </footer>
-      <div id="focusedPausedOverlay" class="focused-paused" hidden>
+      <div id="focusedPausedOverlay" class="focused-paused" hidden aria-hidden="true">
         <h3>⏸ Simulado pausado</h3>
         <p>Seu progresso e o tempo estão preservados. Toque em retomar para continuar.</p>
         <button id="focusedResumeBtn" class="primary" type="button">▶ Retomar simulado</button>
+        <button id="focusedPauseExitBtn" type="button">Sair do simulado</button>
       </div>
     </div>
   </div>
@@ -517,7 +521,7 @@ const bytesOf = (value) => new Blob([typeof value === "string" ? value : JSON.st
 const formatBytes = (bytes) => !Number.isFinite(bytes) ? "Indisponível" : bytes >= 1073741824 ? (bytes / 1073741824).toFixed(2) + " GB" : bytes >= 1048576 ? (bytes / 1048576).toFixed(2) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB";
 
 function cacheElements() {
-  ["appTopbar","heroSection","heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","disciplineChips","questionSection","mapSection","banksSection","reviewSection","profileSection","mobileShortcuts","mobileToHome","mobileToDiscipline","mobileToQuestions","mobileToReview","mobileToMore","topThemeBtn","mobileHeroThemeBtn","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast","brandLink","tipBody","nextTipBtn","startFocusedBtn","resumeBanner","resumeBannerText","resumeBannerBtn","resumeStopBtn","focusedModal","focusedDisciplineLabel","focusedProgress","focusedTimer","focusedPauseBtn","focusedExitBtn","focusedQuestion","focusedPrevBtn","focusedNextBtn","focusedPausedOverlay","focusedResumeBtn","brandModal","brandContinueBtn","brandPauseBtn","brandStopBtn"].forEach(id => el[id] = $(id));
+  ["appTopbar","heroSection","heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","disciplineChips","questionSection","mapSection","banksSection","reviewSection","profileSection","mobileShortcuts","mobileToHome","mobileToDiscipline","mobileToQuestions","mobileToMap","mobileToReview","topThemeBtn","mobileHeroThemeBtn","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast","brandLink","tipBody","nextTipBtn","startFocusedBtn","resumeBanner","resumeBannerText","resumeBannerBtn","resumeStopBtn","focusedModal","focusedDisciplineLabel","focusedProgress","focusedTimer","focusedPauseBtn","focusedExitBtn","focusedQuestion","focusedPrevBtn","focusedNextBtn","focusedPausedOverlay","focusedResumeBtn","focusedPauseExitBtn","brandModal","brandContinueBtn","brandPauseBtn","brandStopBtn"].forEach(id => el[id] = $(id));
 }
 
 function getPersistableState() {
@@ -551,6 +555,12 @@ function loadState() {
     appState.theme = saved.theme || "dark";
     appState.startedAt = saved.startedAt || Date.now();
     appState.focused = saved.focused ? { ...emptyFocused(), ...saved.focused } : emptyFocused();
+    if (appState.focused.paused && appState.focused.pausedAt) {
+      appState.focused.totalPausedMs += Math.max(0, Date.now() - appState.focused.pausedAt);
+    }
+    appState.focused.active = false;
+    appState.focused.paused = false;
+    appState.focused.pausedAt = null;
   } catch {
     showToast("Cache anterior inválido. O simulador iniciou limpo.");
   }
@@ -1069,8 +1079,7 @@ function updateActiveNav() {
     ["questions", el.questionSection],
     ["review", el.reviewSection],
     ["map", el.mapSection],
-    ["banks", el.banksSection],
-    ["more", el.profileSection]
+    ["banks", el.banksSection]
   ].filter(([, node]) => node);
   const focus = (window.innerHeight || document.documentElement.clientHeight) * 0.36;
   let active = "home";
@@ -1146,13 +1155,7 @@ function bindEvents() {
     openFocusedSimulator();
   });
   if (el.resumeBannerBtn) el.resumeBannerBtn.addEventListener("click", () => {
-    if (appState.focused.paused) {
-      // remove a contagem do tempo enquanto estava "totalmente fora" do modal
-      appState.focused.totalPausedMs += Date.now() - (appState.focused.pausedAt || Date.now());
-      appState.focused.paused = false;
-      appState.focused.pausedAt = null;
-    }
-    openFocusedSimulator({ resume: true });
+    resumeFocusedSimulator();
   });
   if (el.resumeStopBtn) el.resumeStopBtn.addEventListener("click", () => {
     if (confirm("Encerrar o simulado em andamento? O progresso de tempo será descartado (suas respostas permanecem salvas).")) {
@@ -1169,9 +1172,13 @@ function bindEvents() {
     resumeFocusedSimulator();
     renderFocusedSimulator();
   });
+  if (el.focusedPauseExitBtn) el.focusedPauseExitBtn.addEventListener("click", () => {
+    closeFocusedSimulator();
+    showToast("Modo foco fechado. Progresso preservado.");
+  });
   if (el.focusedExitBtn) el.focusedExitBtn.addEventListener("click", () => {
     closeFocusedSimulator();
-    showToast("Simulado pausado. Retome quando quiser.");
+    showToast("Modo foco fechado. Progresso preservado.");
   });
   if (el.focusedPrevBtn) el.focusedPrevBtn.addEventListener("click", () => focusedMove(-1));
   if (el.focusedNextBtn) el.focusedNextBtn.addEventListener("click", () => focusedMove(1));
@@ -1184,7 +1191,7 @@ function bindEvents() {
   if (el.brandContinueBtn) el.brandContinueBtn.addEventListener("click", brandModalClose);
   if (el.brandPauseBtn) el.brandPauseBtn.addEventListener("click", () => {
     brandModalClose();
-    closeFocusedSimulator();
+    closeFocusedSimulator({ autoPause: true });
     scrollToSection("heroSection");
     showToast("Simulado pausado.");
   });
@@ -1215,6 +1222,21 @@ function nextTip() {
   renderTip();
 }
 
+function setFocusedPauseOverlay(visible) {
+  if (!el.focusedPausedOverlay) return;
+  el.focusedPausedOverlay.hidden = !visible;
+  el.focusedPausedOverlay.classList.toggle("is-visible", visible);
+  el.focusedPausedOverlay.setAttribute("aria-hidden", visible ? "false" : "true");
+}
+
+function finishFocusedPause() {
+  if (appState.focused.pausedAt) {
+    appState.focused.totalPausedMs += Math.max(0, Date.now() - appState.focused.pausedAt);
+  }
+  appState.focused.paused = false;
+  appState.focused.pausedAt = null;
+}
+
 function updateResumeBanner() {
   if (!el.resumeBanner) return;
   const f = appState.focused;
@@ -1222,7 +1244,7 @@ function updateResumeBanner() {
   if (shouldShow) {
     const totalQs = appState.filteredQuestions.length;
     const pos = Math.min(f.index + 1, totalQs || 1);
-    el.resumeBannerText.textContent = (f.paused ? "⏸ Simulado pausado" : "▶ Simulado em andamento") + " · Questão " + pos + (totalQs ? " de " + totalQs : "");
+    el.resumeBannerText.textContent = (f.paused ? "⏸ Simulado pausado" : "▶ Simulado pronto para retomar") + " · Questão " + pos + (totalQs ? " de " + totalQs : "");
     el.resumeBanner.classList.add("show");
   } else {
     el.resumeBanner.classList.remove("show");
@@ -1247,6 +1269,7 @@ function openFocusedSimulator({ resume = false } = {}) {
     };
   } else {
     appState.focused.active = true;
+    finishFocusedPause();
     // Restaura filtros do snapshot para que o índice corresponda às mesmas questões
     if (appState.focused.snapshotFilters) {
       appState.filters = { ...appState.filters, ...appState.focused.snapshotFilters };
@@ -1260,7 +1283,7 @@ function openFocusedSimulator({ resume = false } = {}) {
   el.focusedModal.classList.add("show");
   el.focusedModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("focused-active");
-  el.focusedPausedOverlay.hidden = !appState.focused.paused;
+  setFocusedPauseOverlay(false);
   renderFocusedSimulator();
   renderFocusedTimer();
   saveState();
@@ -1271,34 +1294,41 @@ function pauseFocusedSimulator() {
   if (!appState.focused.active || appState.focused.paused) return;
   appState.focused.paused = true;
   appState.focused.pausedAt = Date.now();
-  el.focusedPausedOverlay.hidden = false;
+  setFocusedPauseOverlay(true);
   saveState();
 }
 
 function resumeFocusedSimulator() {
-  if (!appState.focused.paused) return;
-  if (appState.focused.pausedAt) {
-    appState.focused.totalPausedMs += Date.now() - appState.focused.pausedAt;
+  if (!appState.focused.startedAt) {
+    openFocusedSimulator();
+    return;
   }
-  appState.focused.paused = false;
-  appState.focused.pausedAt = null;
-  el.focusedPausedOverlay.hidden = true;
-  if (!appState.focused.active) {
+  finishFocusedPause();
+  appState.focused.active = true;
+  setFocusedPauseOverlay(false);
+  if (!el.focusedModal.classList.contains("show")) {
     openFocusedSimulator({ resume: true });
+    return;
   }
+  renderFocusedSimulator();
+  renderFocusedTimer();
   saveState();
 }
 
-function closeFocusedSimulator({ reset = false, autoPause = true } = {}) {
+function closeFocusedSimulator({ reset = false, autoPause = false } = {}) {
   if (reset) {
     appState.focused = emptyFocused();
   } else {
-    if (autoPause && !appState.focused.paused) pauseFocusedSimulator();
+    if (autoPause && !appState.focused.paused) {
+      appState.focused.paused = true;
+      appState.focused.pausedAt = Date.now();
+    }
     appState.focused.active = false;
   }
   el.focusedModal.classList.remove("show");
   el.focusedModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("focused-active");
+  setFocusedPauseOverlay(false);
   saveState();
   render();
 }
@@ -1324,8 +1354,8 @@ function answerFocusedQuestion(letter) {
   showToast(attempt.isCorrect ? "Correta!" : "Errada — veja a explicação.");
   appState.currentIndex = appState.focused.index;
   saveState();
+  render();
   renderFocusedSimulator();
-  renderHeaderStats();
 }
 
 function focusedMove(delta) {
@@ -1349,6 +1379,9 @@ function renderFocusedSimulator() {
   const answer = appState.answers[q.uid];
   const total = appState.filteredQuestions.length;
   const pos = appState.focused.index + 1;
+  const status = getQuestionStatus(q);
+  const statusText = status === "correct" ? "Correta" : status === "wrong" ? "Errada" : "Não respondida";
+  const isMarked = !!appState.marked[q.uid];
   el.focusedDisciplineLabel.textContent = appState.focused.snapshotFilters?.bank && appState.focused.snapshotFilters.bank !== "all"
     ? (BANKS.find(b => b.key === appState.focused.snapshotFilters.bank)?.label || "Modo focado")
     : "Modo focado · Todas as disciplinas";
@@ -1365,16 +1398,30 @@ function renderFocusedSimulator() {
     ? '<div class="feedback"><b>Gabarito: ' + escapeHtml(q.correta) + '</b><br>' + escapeHtml(q.explicacao) + '<p class="mini"><b>Fonte:</b> ' + escapeHtml(q.fonte) + '</p></div>'
     : "";
   el.focusedQuestion.innerHTML =
-    '<div class="topic">' + escapeHtml(q.tema) + '</div>' +
+    '<div class="qtop" style="margin-bottom:0">' +
+      '<div><div class="topic">' + escapeHtml(q.tema) + '</div><div class="qid">Questão ' + pos + ' de ' + total + '</div></div>' +
+      '<div class="qmeta-actions"><span class="badge">' + statusText + '</span><button type="button" data-focused-mark>' + (isMarked ? "Desmarcar revisão" : "Marcar revisão") + '</button></div>' +
+    '</div>' +
     '<div class="enunciado">' + escapeHtml(q.enunciado) + '</div>' +
     '<div class="alternativas">' + choicesHtml + '</div>' +
     feedbackHtml;
   el.focusedQuestion.querySelectorAll("[data-focused-answer]").forEach(btn =>
     btn.addEventListener("click", () => answerFocusedQuestion(btn.dataset.focusedAnswer))
   );
+  const focusedMarkBtn = el.focusedQuestion.querySelector("[data-focused-mark]");
+  if (focusedMarkBtn) {
+    focusedMarkBtn.addEventListener("click", () => {
+      if (appState.marked[q.uid]) delete appState.marked[q.uid];
+      else appState.marked[q.uid] = { markedAt: new Date().toISOString(), bank: q.sourceKey, theme: q.tema };
+      saveState();
+      render();
+      renderFocusedSimulator();
+    });
+  }
   el.focusedPrevBtn.disabled = appState.focused.index === 0;
   el.focusedNextBtn.disabled = appState.focused.index >= total - 1;
   el.focusedPauseBtn.textContent = appState.focused.paused ? "▶ Retomar" : "⏸ Pausar";
+  setFocusedPauseOverlay(appState.focused.active && appState.focused.paused);
 }
 
 function renderFocusedTimer() {
