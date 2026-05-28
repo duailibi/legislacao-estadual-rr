@@ -20,23 +20,24 @@
       --success:#22c55e; --danger:#ef4444; --warning:#facc15; --border:rgba(96,165,250,.22);
       --shadow:0 24px 70px rgba(0,0,0,.45); --shadow-soft:0 14px 36px rgba(0,0,0,.32);
     }
-    * { box-sizing:border-box; }
+    *,*::before,*::after { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body {
       margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:linear-gradient(135deg, var(--bg), var(--bg2) 45%, var(--bg));
       color:var(--text); min-height:100vh; overflow-x:hidden;
     }
+    img,svg { max-width:100%; }
     button,input,select { font:inherit; min-width:0; }
     button { min-height:44px; border:1px solid var(--border); border-radius:var(--radius-sm); background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01)), var(--surface-2); color:var(--text); cursor:pointer; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; transition:.18s transform,.18s border-color,.18s background,.18s opacity; }
-    input,select { min-height:48px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-3); color:var(--text); padding:12px 14px; outline:none; }
+    input,select { width:100%; min-height:48px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-3); color:var(--text); padding:12px 14px; outline:none; }
     button:hover:not(:disabled) { transform:translateY(-1px); border-color:rgba(96,165,250,.7); }
     button:active:not(:disabled) { transform:translateY(0) scale(.99); }
     button:disabled { opacity:.48; cursor:not-allowed; transform:none; }
     button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid rgba(59,130,246,.32); outline-offset:2px; border-color:var(--primary); }
     .primary { background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; border:none; box-shadow:0 14px 34px rgba(59,130,246,.28); }
     .danger { color:var(--danger); border-color:rgba(239,68,68,.28); background:linear-gradient(180deg,rgba(239,68,68,.10),rgba(239,68,68,.03)), var(--surface-2); }
-    .app-topbar { position:sticky; top:0; z-index:35; background:rgba(5,11,24,.78); backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+    .app-topbar { position:sticky; top:0; z-index:50; background:rgba(5,11,24,.78); backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
     [data-theme="light"] .app-topbar { background:rgba(245,248,255,.86); }
     .topbar-inner { max-width:1760px; margin:0 auto; min-height:72px; padding:10px 18px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:18px; align-items:center; }
     .brand { display:flex; align-items:center; gap:12px; min-width:0; }
@@ -49,14 +50,35 @@
     .top-actions { display:flex; align-items:center; gap:10px; }
     .profile-pill { min-height:44px; border:1px solid var(--border); border-radius:999px; padding:7px 12px; display:flex; align-items:center; gap:9px; background:var(--surface-2); color:var(--text); font-weight:800; }
     .avatar { width:28px; height:28px; border-radius:999px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; }
-    .wrap { max-width:1760px; margin:0 auto; padding:18px; }
-    .app-shell { display:grid; grid-template-columns:260px minmax(0,1fr) 420px; gap:18px; align-items:start; }
-    .side-left,.side-right,.content-flow { display:grid; gap:16px; align-content:start; min-width:0; }
-    .side-left,.side-right { position:sticky; top:90px; }
+    .wrap { max-width:none; margin:0; padding:0; }
+    .app-shell { max-width:1800px; margin:0 auto; padding:24px; display:grid; grid-template-areas:"left main right"; grid-template-columns:280px minmax(0,1fr) 360px; gap:24px; align-items:start; }
+    .side-left { grid-area:left; display:grid; gap:16px; align-content:start; min-width:0; position:sticky; top:88px; align-self:start; }
+    .content-flow { grid-area:main; display:grid; gap:16px; align-content:start; min-width:0; position:relative; z-index:0; overflow-x:hidden; }
+    .side-right { grid-area:right; display:flex; flex-direction:column; gap:16px; min-width:0; position:static; top:auto; right:auto; left:auto; transform:none; z-index:auto; align-self:start; }
+    .side-right > .panel { position:static; z-index:auto; transform:none; min-width:0; width:100%; }
+    .question-map-card,.quick-shortcuts-card,.study-tip-card { min-width:0; width:100%; }
+    .app-shell,.content-flow,.side-left,.side-right { isolation:isolate; }
+    .content-flow > *,
+    .hero,
+    .hero-layout,
+    .hero-layout > *,
+    .stats,
+    .stat-grid,
+    .quick-nav,
+    .discipline-card,
+    .toolbar,
+    .question-card,
+    .qtop,
+    .alternativas,
+    .nav,
+    .review,
+    .history,
+    .footer-note { min-width:0; max-width:100%; }
+    .hero,.quick-nav,.discipline-card,.question-card,.footer-note { width:100%; }
     .panel,.hero,.question-card,.discipline-card,.quick-nav { border:1px solid var(--border); border-radius:var(--radius); background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)), var(--surface); box-shadow:var(--shadow-soft); }
     .panel,.discipline-card { padding:16px; }
     .hero { padding:26px; overflow:hidden; position:relative; background:linear-gradient(135deg,rgba(37,99,235,.30),rgba(139,92,246,.16) 48%,rgba(14,26,45,.78)), var(--surface); }
-    .hero-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.82fr); gap:22px; align-items:center; }
+    .hero-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.82fr); gap:22px; align-items:center; }
     .hero-theme-btn { display:none; position:absolute; right:14px; top:14px; border-radius:999px; min-height:38px; padding:8px 12px; }
     h1 { margin:0 0 10px; font-size:clamp(1.85rem, 2.4vw, 2.35rem); line-height:1.06; letter-spacing:0; }
     h2 { margin:0 0 12px; font-size:1rem; letter-spacing:.01em; }
@@ -75,10 +97,10 @@
     .stat:nth-child(6) b { color:#a78bfa; }
     .progressbar { height:10px; border-radius:999px; overflow:hidden; border:1px solid var(--border); background:rgba(148,163,184,.12); margin-top:12px; }
     .progressbar div { height:100%; width:0; background:linear-gradient(90deg,var(--primary),var(--primary-2)); transition:.25s; }
-    .quick-nav { display:flex; gap:10px; padding:12px; overflow-x:auto; scrollbar-width:none; }
+    .quick-nav { display:flex; gap:10px; padding:12px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
     .quick-nav::-webkit-scrollbar,.discipline-chips::-webkit-scrollbar { display:none; }
-    .discipline-card { display:grid; gap:12px; }
-    .discipline-chips { display:flex; gap:10px; overflow-x:auto; padding:2px 2px 5px; scrollbar-width:none; }
+    .discipline-card { display:grid; gap:12px; overflow:hidden; }
+    .discipline-chips { display:flex; gap:10px; max-width:100%; min-width:0; overflow-x:auto; overflow-y:hidden; padding:2px 2px 5px; scrollbar-width:none; }
     .discipline-chip { flex:0 0 auto; max-width:220px; min-height:56px; justify-content:flex-start; text-align:left; white-space:normal; border-radius:16px; padding:10px 12px; color:var(--text); }
     .discipline-chip.active { border-color:rgba(96,165,250,.85); background:linear-gradient(135deg,rgba(59,130,246,.32),rgba(139,92,246,.18)); box-shadow:0 0 0 3px rgba(59,130,246,.14); }
     .discipline-chip.active:after { content:"✓"; margin-left:auto; width:24px; height:24px; border-radius:999px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; }
@@ -95,9 +117,11 @@
     .qmeta-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .topic { color:#93c5fd; font-weight:950; font-size:.84rem; text-transform:uppercase; letter-spacing:.04em; }
     .qid,.mini { color:var(--muted); font-size:.88rem; line-height:1.45; }
-    .enunciado { font-size:1.15rem; line-height:1.58; margin:12px 0 20px; font-weight:750; }
+    .enunciado { font-size:1.15rem; line-height:1.58; margin:12px 0 20px; font-weight:750; overflow-wrap:anywhere; }
     .alternativas { display:grid; gap:10px; }
-    .alt { width:100%; text-align:left; padding:13px 14px; border-radius:16px; background:rgba(15,23,42,.16); border:1px solid var(--border); font-weight:700; display:grid; grid-template-columns:38px 1fr auto; align-items:center; gap:10px; }
+    .alt { width:100%; min-width:0; text-align:left; padding:13px 14px; border-radius:16px; background:rgba(15,23,42,.16); border:1px solid var(--border); font-weight:700; display:grid; grid-template-columns:38px minmax(0,1fr) auto; align-items:center; gap:10px; }
+    .alt span { min-width:0; }
+    .alt span:nth-child(2) { overflow-wrap:anywhere; }
     .alt .letter { width:34px; height:34px; border-radius:11px; display:inline-flex; align-items:center; justify-content:center; background:rgba(59,130,246,.20); color:#93c5fd; font-weight:950; }
     .alt .answer-icon { width:24px; height:24px; border-radius:999px; display:grid; place-items:center; color:#fff; font-size:.82rem; }
     .alt.selected { border-color:rgba(96,165,250,.9); box-shadow:0 0 0 3px rgba(59,130,246,.18), 0 0 28px rgba(59,130,246,.14); }
@@ -118,7 +142,8 @@
     .source-row b { color:var(--text); overflow-wrap:anywhere; }
     .source-stats { grid-column:1 / -1; color:var(--muted); font-size:.78rem; }
     .source-count { align-self:start; border-radius:999px; padding:4px 9px; background:rgba(59,130,246,.20); color:#93c5fd; font-weight:950; }
-    .question-map { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; max-height:520px; overflow:auto; padding-right:4px; }
+    #mapSection { max-height:520px; overflow:hidden; padding:18px; }
+    .question-map { display:grid; grid-template-columns:repeat(5,minmax(44px,1fr)); gap:8px; max-height:380px; overflow-y:auto; overflow-x:hidden; padding-right:6px; }
     .qdot { position:relative; border-radius:12px; padding:10px 0; min-height:42px; font-size:.86rem; border:1px solid var(--border); background:var(--surface-2); color:var(--text); }
     .qdot.active { outline:3px solid rgba(96,165,250,.24); border-color:var(--primary); background:rgba(96,165,250,.12); }
     .qdot.correct { background:rgba(34,197,94,.16); border-color:rgba(34,197,94,.5); }
@@ -133,7 +158,7 @@
     .review.show,.history.show { display:block; }
     .review-item,.history-item { border:1px solid var(--border); border-radius:16px; padding:14px; margin:10px 0; background:rgba(127,127,127,.04); }
     .review-item b { color:#93c5fd; }
-    .modal-backdrop { position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(2,6,23,.62); z-index:20; }
+    .modal-backdrop { position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(2,6,23,.62); z-index:100; }
     .modal-backdrop.show { display:flex; }
     .modal { width:min(520px,100%); background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:22px; padding:20px; box-shadow:var(--shadow); }
     .modal-actions { display:grid; gap:10px; margin-top:16px; }
@@ -146,23 +171,69 @@
     .quick-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .quick-card { min-height:78px; flex-direction:column; }
     .footer-note { color:var(--muted); text-align:center; font-size:.85rem; padding:10px 0 0; }
-    @media(max-width:1599px){.app-shell{grid-template-columns:250px minmax(0,1fr) 360px}.toolbar{grid-template-columns:1fr 1fr}.question-map{grid-template-columns:repeat(5,1fr)}}
-    @media(max-width:1180px){.app-shell{grid-template-columns:minmax(0,1fr) 340px}.side-left{position:static;grid-column:1 / -1;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;order:3}.side-right{top:90px;order:2}.content-flow{order:1}.hero-layout{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.top-links{overflow:auto;justify-content:flex-start}.brand-sub{display:none}}
-    @media(max-width:1023px){.topbar-inner{grid-template-columns:auto 1fr auto}.profile-pill{display:none}.app-shell{grid-template-columns:1fr}.side-left,.side-right{position:static;grid-column:auto;grid-template-columns:1fr}.content-flow{order:1}.side-left{order:2}.side-right{order:3}.question-map{grid-template-columns:repeat(10,1fr);max-height:340px}.control-grid .row{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:767px){.app-topbar{display:none}.wrap{padding:10px 10px calc(106px + env(safe-area-inset-bottom))}.hero,.panel,.question-card,.discipline-card,.quick-nav{border-radius:20px}.hero{padding:58px 18px 18px}.hero h1{font-size:clamp(1.48rem,6.2vw,2rem)}.hero-theme-btn{display:inline-flex}.hero-layout{gap:16px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{min-height:68px;padding:12px}.toolbar{grid-template-columns:1fr}.quick-nav{position:sticky;top:0;z-index:12;background:rgba(5,11,24,.72);backdrop-filter:blur(14px);border-radius:18px}.discipline-chip{max-width:190px}.qtop{align-items:flex-start}.qmeta-actions{justify-content:flex-start}.nav{grid-template-columns:1fr 1fr}.nav #nextBtn{grid-column:2}.group{grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(5,1fr);max-height:360px}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:4px;min-height:76px;padding:8px;border:1px solid var(--border);border-radius:26px;background:rgba(5,11,24,.84);backdrop-filter:blur(18px);box-shadow:var(--shadow)}[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.88)}.toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}.modal-backdrop{z-index:60}}
+    .brand-link { background:transparent; border:0; padding:0; cursor:pointer; min-height:0; display:flex; align-items:center; gap:12px; min-width:0; text-align:left; color:inherit; }
+    .brand-link:hover:not(:disabled) { transform:none; border-color:transparent; }
+    .brand-link:focus-visible { outline:3px solid rgba(59,130,246,.32); outline-offset:4px; border-radius:14px; }
+    .discipline-card { position:relative; }
+    .discipline-chips-wrap { position:relative; min-width:0; max-width:100%; overflow:hidden; }
+    .discipline-chips-wrap::after { content:""; position:absolute; right:0; top:0; bottom:5px; width:24px; background:linear-gradient(90deg,transparent,var(--surface)); pointer-events:none; opacity:.9; }
+    .discipline-chip { min-width:180px; max-width:200px; scroll-snap-align:start; }
+    .discipline-chips { scroll-snap-type:x mandatory; }
+    .focused-trigger { width:100%; padding:14px 18px; font-size:1rem; margin-top:4px; }
+    .focused-trigger:disabled { opacity:.55; }
+    .tips-panel .tip-body { min-height:96px; font-size:.95rem; line-height:1.55; color:var(--text); padding:12px 14px; border-left:4px solid var(--primary); background:rgba(96,165,250,.08); border-radius:0 12px 12px 0; margin-bottom:12px; font-weight:600; }
+    .tips-panel #nextTipBtn { width:100%; }
+    .compact-group { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .compact-group button { font-size:.78rem; padding:9px 8px; min-height:42px; white-space:normal; line-height:1.15; }
+    .resume-banner { display:none; margin-bottom:12px; padding:12px 16px; border-radius:14px; border:1px solid rgba(250,204,21,.45); background:rgba(250,204,21,.12); color:var(--warning); font-weight:800; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .resume-banner.show { display:flex; }
+    .resume-banner button { border:0; box-shadow:0 10px 24px rgba(59,130,246,.28); }
+    .resume-banner #resumeBannerBtn { background:linear-gradient(135deg,var(--primary),var(--primary-2)); color:#fff; }
+    .resume-banner #resumeStopBtn { background:linear-gradient(180deg,rgba(239,68,68,.18),rgba(239,68,68,.06)); color:var(--danger); border:1px solid rgba(239,68,68,.4); box-shadow:none; }
+    .focused-modal-backdrop { position:fixed; inset:0; z-index:75; background:rgba(2,6,23,.88); backdrop-filter:blur(10px); display:none; padding:20px; padding-top:90px; }
+    body.focused-active #brandModal.modal-backdrop { z-index:100; }
+    body.focused-active #brandModal .modal { box-shadow:0 30px 80px rgba(0,0,0,.6); }
+    .focused-modal-backdrop.show { display:flex; align-items:stretch; justify-content:center; }
+    .focused-modal { position:relative; width:min(920px,100%); max-height:calc(100vh - 40px); display:grid; grid-template-rows:auto 1fr auto; background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
+    .focused-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.08)); }
+    .focused-meta { display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .focused-meta b { color:#93c5fd; font-size:.84rem; text-transform:uppercase; letter-spacing:.04em; }
+    .focused-meta span.mini { color:var(--muted); font-size:.88rem; }
+    .focused-controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .focused-controls #focusedTimer { font-weight:950; font-size:1.05rem; color:#93c5fd; padding:6px 12px; border:1px solid var(--border); border-radius:999px; background:rgba(15,23,42,.16); }
+    .focused-question { padding:24px; overflow-y:auto; display:flex; flex-direction:column; gap:14px; }
+    .focused-question .enunciado { margin:0; }
+    .focused-question .alternativas { display:grid; gap:10px; }
+    .focused-question .feedback { display:block; margin-top:4px; padding:14px 16px; border-radius:16px; border:1px solid var(--border); background:rgba(148,163,184,.07); line-height:1.55; }
+    .focused-nav { padding:16px 20px; border-top:1px solid var(--border); display:grid; grid-template-columns:1fr 1fr; gap:10px; background:var(--surface-2); }
+    .focused-paused { position:absolute; inset:0; background:rgba(2,6,23,.92); display:grid; place-items:center; gap:14px; z-index:5; text-align:center; padding:24px; }
+    .focused-paused h3 { margin:0; font-size:1.4rem; color:#93c5fd; }
+    .focused-paused p { margin:0; color:var(--muted); }
+    .focused-paused button { min-width:200px; }
+    body.focused-active { overflow:hidden; }
+    body.focused-active .mobile-bottom-nav { display:none !important; }
+    body.focused-active .top-links,
+    body.focused-active .top-actions { visibility:hidden; pointer-events:none; }
+    body.focused-active .brand-link:hover { transform:translateY(-1px); }
+    body.focused-active .wrap { visibility:hidden; pointer-events:none; }
+    @media(min-width:1280px){.app-shell{grid-template-areas:"left main right";grid-template-columns:280px minmax(0,1fr) 360px}}
+    @media(max-width:1279px){.app-shell{grid-template-areas:"left main" "right right";grid-template-columns:260px minmax(0,1fr)}.side-left{grid-area:left;position:static}.content-flow{grid-area:main}.side-right{grid-area:right;position:static;display:grid;grid-template-columns:1fr 1fr;gap:16px}.side-right .tips-panel{grid-column:1 / -1}.hero-layout{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.top-links{overflow:auto;justify-content:flex-start}.brand-sub{display:none}}
+    @media(max-width:1023px){.topbar-inner{grid-template-columns:auto 1fr auto}.profile-pill{display:none}.app-shell{grid-template-areas:"main" "right" "left";grid-template-columns:1fr;padding:16px}.side-left,.side-right{position:static;grid-template-columns:1fr}.content-flow{grid-area:main}.side-right{grid-area:right}.side-left{grid-area:left}.question-map{grid-template-columns:repeat(10,minmax(38px,1fr));max-height:340px}.control-grid .row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:767px){.app-topbar{display:none}.app-shell{display:flex;flex-direction:column;gap:16px;padding:12px;padding-bottom:calc(106px + env(safe-area-inset-bottom))}.content-flow{order:1}.side-right{order:2}.side-left{order:3}.hero,.panel,.question-card,.discipline-card,.quick-nav{border-radius:20px}.hero{padding:58px 18px 18px}.hero h1{font-size:clamp(1.48rem,6.2vw,2rem)}.hero-theme-btn{display:inline-flex}.hero-layout{gap:16px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{min-height:68px;padding:12px}.toolbar{grid-template-columns:1fr}.quick-nav{position:sticky;top:0;z-index:12;background:rgba(5,11,24,.72);backdrop-filter:blur(14px);border-radius:18px}.discipline-chip{max-width:190px}.qtop{align-items:flex-start}.qmeta-actions{justify-content:flex-start}.nav{grid-template-columns:1fr 1fr}.nav #nextBtn{grid-column:2}.group{grid-column:1 / -1;grid-row:2;grid-template-columns:repeat(3,1fr)}.question-map{grid-template-columns:repeat(5,minmax(44px,1fr));max-height:360px}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:4px;min-height:76px;padding:8px;border:1px solid var(--border);border-radius:26px;background:rgba(5,11,24,.84);backdrop-filter:blur(18px);box-shadow:var(--shadow)}[data-theme="light"] .mobile-bottom-nav{background:rgba(255,255,255,.88)}.toast{bottom:calc(96px + env(safe-area-inset-bottom));max-width:calc(100vw - 22px);text-align:center}.modal-backdrop{z-index:100}}
+    @media(max-width:767px){.focused-modal-backdrop{padding:0}.focused-modal{max-height:100vh; border-radius:0; width:100%}.focused-question{padding:18px}.focused-nav{grid-template-columns:1fr 1fr}}
     @media(max-width:480px){.wrap{padding-left:8px;padding-right:8px}.hero{padding:54px 14px 14px}.hero h1{font-size:1.45rem}.hero-theme-btn{right:10px;top:10px;font-size:.86rem}.subtitle{font-size:.88rem}.stat-grid{gap:8px}.stat b{font-size:1.24rem}.quick-nav button{padding:10px 12px}.question-card{padding:15px}.enunciado{font-size:1.02rem}.alt{grid-template-columns:34px 1fr auto;padding:11px}.alt .letter{width:31px;height:31px}.nav{grid-template-columns:1fr}.nav #nextBtn{grid-column:1;grid-row:1}.nav #prevBtn{grid-column:1;grid-row:2}.group{grid-row:3;grid-template-columns:1fr 1fr}.bottom-nav-item{font-size:.69rem}.bottom-nav-item .nav-ico{font-size:1.18rem}}
   </style>
 </head>
 <body data-theme="dark">
   <header class="app-topbar" id="appTopbar">
     <div class="topbar-inner">
-      <div class="brand" aria-label="Simulador ALE-RR">
+      <button id="brandLink" class="brand brand-link" type="button" aria-label="Voltar ao início do simulador">
         <span class="brand-mark" aria-hidden="true">⚖</span>
         <div>
           <div class="brand-title">ALE-RR</div>
           <div class="brand-sub">Simulador</div>
         </div>
-      </div>
+      </button>
       <nav class="top-links" aria-label="Navegação principal">
         <button type="button" data-scroll-target="heroSection" data-nav-key="home">⌂ Início</button>
         <button type="button" data-scroll-target="questionSection" data-nav-key="questions">◎ Questão atual</button>
@@ -206,7 +277,7 @@
           <div class="meter"><div id="browserMeter"></div></div>
           <div class="mini">Estado salvo: <b id="stateUsage">0 KB</b> / <span id="stateLimit">3072 KB</span></div>
           <div class="meter"><div id="stateMeter"></div></div>
-          <div class="group" style="margin-top:10px">
+          <div class="compact-group">
             <button id="refreshCacheBtn">Atualizar cache</button>
             <button id="compactHistoryBtn">Compactar histórico</button>
           </div>
@@ -246,13 +317,23 @@
 
         <section class="discipline-card" id="disciplineSection">
           <h2>Disciplinas e filtros</h2>
-          <div id="disciplineChips" class="discipline-chips" aria-label="Chips de disciplinas"></div>
+          <div id="resumeBanner" class="resume-banner" role="status">
+            <span id="resumeBannerText">⏸ Simulado pausado. Retome de onde parou.</span>
+            <span style="display:inline-flex; gap:8px; flex-wrap:wrap;">
+              <button id="resumeBannerBtn" type="button">▶ Retomar simulado</button>
+              <button id="resumeStopBtn" type="button" class="danger">✕ Encerrar</button>
+            </span>
+          </div>
+          <div class="discipline-chips-wrap">
+            <div id="disciplineChips" class="discipline-chips" aria-label="Chips de disciplinas"></div>
+          </div>
           <div class="toolbar">
             <div class="search-wrap"><input id="search" placeholder="Buscar por palavra-chave..." aria-label="Buscar por palavra-chave"></div>
             <select id="bankFilter" aria-label="Filtrar por disciplina"></select>
             <select id="themeFilter" aria-label="Filtrar por tema"></select>
             <select id="statusFilter" aria-label="Filtrar por status"></select>
           </div>
+          <button id="startFocusedBtn" class="primary focused-trigger" type="button">▶ Iniciar simulado focado</button>
         </section>
 
         <div id="reviewModeBanner" class="mode-banner">
@@ -291,7 +372,7 @@
       </section>
 
       <aside class="side-right">
-        <section class="panel" id="mapSection">
+        <section class="panel question-map-card" id="mapSection">
           <h2>Mapa das questões</h2>
           <p class="mini" id="mapInfo"></p>
           <div class="question-map" id="questionMap"></div>
@@ -303,7 +384,7 @@
           </div>
         </section>
 
-        <section class="panel">
+        <section class="panel quick-shortcuts-card">
           <h2>Atalhos rápidos</h2>
           <div class="quick-cards">
             <button class="quick-card" type="button" data-scroll-target="questionSection">☆ Questão atual</button>
@@ -311,6 +392,12 @@
             <button class="quick-card" type="button" data-scroll-target="mapSection">▦ Mapa</button>
             <button class="quick-card" type="button" data-scroll-target="profileSection">◴ Mais</button>
           </div>
+        </section>
+
+        <section class="panel tips-panel study-tip-card" aria-label="Dica de estudo">
+          <h2>💡 Dica de estudo</h2>
+          <div id="tipBody" class="tip-body"></div>
+          <button id="nextTipBtn" type="button">Próxima dica</button>
         </section>
       </aside>
     </main>
@@ -336,6 +423,44 @@
     <button id="mobileToReview" type="button" class="bottom-nav-item" data-scroll-target="reviewSection" data-nav-key="review"><span class="nav-ico">↻</span><span>Revisão</span></button>
     <button id="mobileToMore" type="button" class="bottom-nav-item" data-scroll-target="profileSection" data-nav-key="more"><span class="nav-ico">☰</span><span>Mais</span></button>
   </nav>
+  <div id="focusedModal" class="focused-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="focused-modal">
+      <header class="focused-header">
+        <div class="focused-meta">
+          <b id="focusedDisciplineLabel">Modo focado</b>
+          <span class="mini" id="focusedProgress">Questão 1 de 1</span>
+        </div>
+        <div class="focused-controls">
+          <span id="focusedTimer" aria-label="Tempo decorrido">00:00</span>
+          <button id="focusedPauseBtn" type="button">⏸ Pausar</button>
+          <button id="focusedExitBtn" type="button">✕ Sair</button>
+        </div>
+      </header>
+      <article class="focused-question" id="focusedQuestion" aria-live="polite"></article>
+      <footer class="focused-nav">
+        <button id="focusedPrevBtn" type="button">← Anterior</button>
+        <button id="focusedNextBtn" class="primary" type="button">Próxima →</button>
+      </footer>
+      <div id="focusedPausedOverlay" class="focused-paused" hidden>
+        <h3>⏸ Simulado pausado</h3>
+        <p>Seu progresso e o tempo estão preservados. Toque em retomar para continuar.</p>
+        <button id="focusedResumeBtn" class="primary" type="button">▶ Retomar simulado</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="brandModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>Deseja sair do simulado focado?</h2>
+      <p class="mini">O simulado está em andamento. Escolha como deseja prosseguir.</p>
+      <div class="modal-actions">
+        <button id="brandContinueBtn" class="primary">Continuar simulado</button>
+        <button id="brandPauseBtn">Pausar e sair (poderei retomar)</button>
+        <button id="brandStopBtn" class="danger">Encerrar simulado</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
 
   <script>
@@ -348,6 +473,25 @@ const STORAGE_KEY = "simulador_legislacao_ale_rr_v1";
 const MAX_STATE_BYTES = 3 * 1024 * 1024;
 const LETTERS = ["A", "B", "C", "D", "E"];
 const STATUS_LABELS = { all: "Todas", unanswered: "Não respondidas", correct: "Corretas", wrong: "Erradas", marked: "Marcadas para revisar" };
+const STUDY_TIPS = [
+  "Revise as questões erradas no mesmo dia — a memória de curto prazo é a janela mais valiosa.",
+  "Antes de responder, leia o enunciado duas vezes: muitas pegadinhas estão no 'EXCETO' ou 'INCORRETA'.",
+  "Faça blocos de 25 questões e descanse 5 minutos — concentração é músculo.",
+  "Marque com 'Marcar revisão' as questões que você acertou por sorte, não só as erradas.",
+  "Estude o Regimento Interno em sequência (I → V): os conceitos se encadeiam.",
+  "Para Constituição Estadual, decore prazos e quóruns — caem em quase toda prova.",
+  "Geografia de Roraima: foque em rios (Branco, Uraricoera, Tacutu), Monte Roraima e lavrados.",
+  "História de Roraima: memorize 4 datas-chave — 1775, 1890, 1943, 1988.",
+  "LC 373: identifique o conceito de 'impedimento técnico' — é o tema mais cobrado.",
+  "Faça simulados cronometrados ao menos 1x por semana — você precisa treinar pressão.",
+  "Use o modo focado para sessões longas: sem distração da interface principal.",
+  "Releia explicações das questões corretas também — elas reforçam o porquê.",
+  "Salve sua sessão no histórico ao fim do dia para acompanhar evolução semanal.",
+  "Atenção aos artigos da Constituição com numeração próxima — 54, 55, 56, 57 são confundidos.",
+  "Na LC 373 e no Regimento, sempre que ver 'maioria absoluta', cheque se não é 'simples'."
+];
+let currentTipIndex = Math.floor(Math.random() * STUDY_TIPS.length);
+const emptyFocused = () => ({ active:false, paused:false, startedAt:null, pausedAt:null, totalPausedMs:0, bank:null, index:0, snapshotFilters:null });
 
 const appState = {
   questions: QUESTIONS,
@@ -361,7 +505,8 @@ const appState = {
   mode: "normal",
   theme: "dark",
   startedAt: Date.now(),
-  stats: { total: QUESTIONS.length, answered: 0, correct: 0, wrong: 0, unanswered: QUESTIONS.length, marked: 0 }
+  stats: { total: QUESTIONS.length, answered: 0, correct: 0, wrong: 0, unanswered: QUESTIONS.length, marked: 0 },
+  focused: emptyFocused()
 };
 
 const el = {};
@@ -372,7 +517,7 @@ const bytesOf = (value) => new Blob([typeof value === "string" ? value : JSON.st
 const formatBytes = (bytes) => !Number.isFinite(bytes) ? "Indisponível" : bytes >= 1073741824 ? (bytes / 1073741824).toFixed(2) + " GB" : bytes >= 1048576 ? (bytes / 1048576).toFixed(2) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB";
 
 function cacheElements() {
-  ["appTopbar","heroSection","heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","disciplineChips","questionSection","mapSection","banksSection","reviewSection","profileSection","mobileShortcuts","mobileToHome","mobileToDiscipline","mobileToQuestions","mobileToReview","mobileToMore","topThemeBtn","mobileHeroThemeBtn","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast"].forEach(id => el[id] = $(id));
+  ["appTopbar","heroSection","heroBadges","totalStat","answeredStat","rightStat","wrongStat","percentStat","timerStat","progressFill","disciplineSection","disciplineChips","questionSection","mapSection","banksSection","reviewSection","profileSection","mobileShortcuts","mobileToHome","mobileToDiscipline","mobileToQuestions","mobileToReview","mobileToMore","topThemeBtn","mobileHeroThemeBtn","search","bankFilter","themeFilter","statusFilter","themeBtn","shuffleBtn","wrongReviewBtn","saveHistoryBtn","clearAnswersBtn","clearLocalBtn","refreshCacheBtn","compactHistoryBtn","browserUsage","browserMeter","stateUsage","stateLimit","stateMeter","bankProgress","mapInfo","questionMap","reviewModeBanner","reviewModeText","exitReviewBtn","topic","questionMeta","statusBadge","statement","choices","feedback","prevBtn","nextBtn","markBtn","clearOneBtn","historyBtn","reviewListBtn","reviewList","historyPanel","clearModal","clearFiltersModalBtn","clearAnswersModalBtn","clearHistoryModalBtn","clearAllModalBtn","closeModalBtn","toast","brandLink","tipBody","nextTipBtn","startFocusedBtn","resumeBanner","resumeBannerText","resumeBannerBtn","resumeStopBtn","focusedModal","focusedDisciplineLabel","focusedProgress","focusedTimer","focusedPauseBtn","focusedExitBtn","focusedQuestion","focusedPrevBtn","focusedNextBtn","focusedPausedOverlay","focusedResumeBtn","brandModal","brandContinueBtn","brandPauseBtn","brandStopBtn"].forEach(id => el[id] = $(id));
 }
 
 function getPersistableState() {
@@ -386,6 +531,7 @@ function getPersistableState() {
     mode: appState.mode,
     theme: appState.theme,
     startedAt: appState.startedAt,
+    focused: appState.focused,
     updatedAt: new Date().toISOString()
   };
 }
@@ -404,6 +550,7 @@ function loadState() {
     appState.mode = saved.mode || (appState.reviewMode === "wrong" ? "wrong-review" : "normal");
     appState.theme = saved.theme || "dark";
     appState.startedAt = saved.startedAt || Date.now();
+    appState.focused = saved.focused ? { ...emptyFocused(), ...saved.focused } : emptyFocused();
   } catch {
     showToast("Cache anterior inválido. O simulador iniciou limpo.");
   }
@@ -496,6 +643,7 @@ function render() {
   renderCacheInfo();
   updateMobileShortcuts();
   updateActiveNav();
+  updateResumeBanner();
 }
 
 function renderHeaderStats() {
@@ -968,7 +1116,13 @@ function bindEvents() {
   el.clearAnswersBtn.addEventListener("click", resetAnswers);
   el.clearLocalBtn.addEventListener("click", openClearModal);
   el.refreshCacheBtn.addEventListener("click", () => { renderCacheInfo(); showToast("Cache atualizado."); });
-  el.compactHistoryBtn.addEventListener("click", () => { appState.history = appState.history.slice(-20); showToast("Histórico compactado."); saveState(); renderHistory(true); });
+  el.compactHistoryBtn.addEventListener("click", () => {
+    if (!confirm("Compactar histórico mantendo apenas os 20 registros mais recentes?")) return;
+    appState.history = appState.history.slice(-20);
+    showToast("Histórico compactado.");
+    saveState();
+    renderHistory(true);
+  });
   el.prevBtn.addEventListener("click", () => move(-1));
   el.nextBtn.addEventListener("click", () => move(1));
   el.markBtn.addEventListener("click", toggleMarked);
@@ -981,6 +1135,272 @@ function bindEvents() {
   el.clearHistoryModalBtn.addEventListener("click", clearHistory);
   el.clearAllModalBtn.addEventListener("click", () => { if (confirm("Tem certeza que deseja apagar respostas, histórico e progresso salvo? Essa ação não pode ser desfeita.")) clearAllLocalData(); });
   el.clearModal.addEventListener("click", (event) => { if (event.target === el.clearModal) closeClearModal(); });
+  if (el.brandLink) el.brandLink.addEventListener("click", onBrandClick);
+  if (el.nextTipBtn) el.nextTipBtn.addEventListener("click", nextTip);
+  if (el.startFocusedBtn) el.startFocusedBtn.addEventListener("click", () => {
+    if (appState.focused.startedAt && !appState.focused.active) {
+      const ok = confirm("Já existe um simulado em andamento. Deseja descartar e iniciar um novo?");
+      if (!ok) { openFocusedSimulator({ resume: true }); return; }
+      appState.focused = emptyFocused();
+    }
+    openFocusedSimulator();
+  });
+  if (el.resumeBannerBtn) el.resumeBannerBtn.addEventListener("click", () => {
+    if (appState.focused.paused) {
+      // remove a contagem do tempo enquanto estava "totalmente fora" do modal
+      appState.focused.totalPausedMs += Date.now() - (appState.focused.pausedAt || Date.now());
+      appState.focused.paused = false;
+      appState.focused.pausedAt = null;
+    }
+    openFocusedSimulator({ resume: true });
+  });
+  if (el.resumeStopBtn) el.resumeStopBtn.addEventListener("click", () => {
+    if (confirm("Encerrar o simulado em andamento? O progresso de tempo será descartado (suas respostas permanecem salvas).")) {
+      closeFocusedSimulator({ reset: true });
+      showToast("Simulado encerrado.");
+    }
+  });
+  if (el.focusedPauseBtn) el.focusedPauseBtn.addEventListener("click", () => {
+    if (appState.focused.paused) resumeFocusedSimulator();
+    else pauseFocusedSimulator();
+    renderFocusedSimulator();
+  });
+  if (el.focusedResumeBtn) el.focusedResumeBtn.addEventListener("click", () => {
+    resumeFocusedSimulator();
+    renderFocusedSimulator();
+  });
+  if (el.focusedExitBtn) el.focusedExitBtn.addEventListener("click", () => {
+    closeFocusedSimulator();
+    showToast("Simulado pausado. Retome quando quiser.");
+  });
+  if (el.focusedPrevBtn) el.focusedPrevBtn.addEventListener("click", () => focusedMove(-1));
+  if (el.focusedNextBtn) el.focusedNextBtn.addEventListener("click", () => focusedMove(1));
+  if (el.focusedModal) el.focusedModal.addEventListener("click", (event) => {
+    if (event.target === el.focusedModal) {
+      // clique no backdrop: pausa e fecha
+      closeFocusedSimulator();
+    }
+  });
+  if (el.brandContinueBtn) el.brandContinueBtn.addEventListener("click", brandModalClose);
+  if (el.brandPauseBtn) el.brandPauseBtn.addEventListener("click", () => {
+    brandModalClose();
+    closeFocusedSimulator();
+    scrollToSection("heroSection");
+    showToast("Simulado pausado.");
+  });
+  if (el.brandStopBtn) el.brandStopBtn.addEventListener("click", () => {
+    brandModalClose();
+    closeFocusedSimulator({ reset: true });
+    scrollToSection("heroSection");
+    showToast("Simulado encerrado.");
+  });
+  if (el.brandModal) el.brandModal.addEventListener("click", (event) => {
+    if (event.target === el.brandModal) brandModalClose();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (el.brandModal.classList.contains("show")) { brandModalClose(); return; }
+      if (appState.focused.active) { closeFocusedSimulator(); return; }
+    }
+  });
+}
+
+function renderTip() {
+  if (!el.tipBody) return;
+  el.tipBody.textContent = STUDY_TIPS[currentTipIndex];
+}
+
+function nextTip() {
+  currentTipIndex = (currentTipIndex + 1) % STUDY_TIPS.length;
+  renderTip();
+}
+
+function updateResumeBanner() {
+  if (!el.resumeBanner) return;
+  const f = appState.focused;
+  const shouldShow = f && f.startedAt && !f.active;
+  if (shouldShow) {
+    const totalQs = appState.filteredQuestions.length;
+    const pos = Math.min(f.index + 1, totalQs || 1);
+    el.resumeBannerText.textContent = (f.paused ? "⏸ Simulado pausado" : "▶ Simulado em andamento") + " · Questão " + pos + (totalQs ? " de " + totalQs : "");
+    el.resumeBanner.classList.add("show");
+  } else {
+    el.resumeBanner.classList.remove("show");
+  }
+}
+
+function openFocusedSimulator({ resume = false } = {}) {
+  if (!resume) {
+    if (appState.filteredQuestions.length === 0) {
+      showToast("Nenhuma questão disponível com os filtros atuais.");
+      return;
+    }
+    appState.focused = {
+      active: true,
+      paused: false,
+      startedAt: Date.now(),
+      pausedAt: null,
+      totalPausedMs: 0,
+      bank: appState.filters.bank,
+      index: appState.currentIndex,
+      snapshotFilters: { ...appState.filters }
+    };
+  } else {
+    appState.focused.active = true;
+    // Restaura filtros do snapshot para que o índice corresponda às mesmas questões
+    if (appState.focused.snapshotFilters) {
+      appState.filters = { ...appState.filters, ...appState.focused.snapshotFilters };
+      el.search.value = appState.filters.search;
+      applyFilters({ resetIndex: false });
+    }
+    if (appState.focused.index >= appState.filteredQuestions.length) {
+      appState.focused.index = Math.max(0, appState.filteredQuestions.length - 1);
+    }
+  }
+  el.focusedModal.classList.add("show");
+  el.focusedModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("focused-active");
+  el.focusedPausedOverlay.hidden = !appState.focused.paused;
+  renderFocusedSimulator();
+  renderFocusedTimer();
+  saveState();
+  render();
+}
+
+function pauseFocusedSimulator() {
+  if (!appState.focused.active || appState.focused.paused) return;
+  appState.focused.paused = true;
+  appState.focused.pausedAt = Date.now();
+  el.focusedPausedOverlay.hidden = false;
+  saveState();
+}
+
+function resumeFocusedSimulator() {
+  if (!appState.focused.paused) return;
+  if (appState.focused.pausedAt) {
+    appState.focused.totalPausedMs += Date.now() - appState.focused.pausedAt;
+  }
+  appState.focused.paused = false;
+  appState.focused.pausedAt = null;
+  el.focusedPausedOverlay.hidden = true;
+  if (!appState.focused.active) {
+    openFocusedSimulator({ resume: true });
+  }
+  saveState();
+}
+
+function closeFocusedSimulator({ reset = false, autoPause = true } = {}) {
+  if (reset) {
+    appState.focused = emptyFocused();
+  } else {
+    if (autoPause && !appState.focused.paused) pauseFocusedSimulator();
+    appState.focused.active = false;
+  }
+  el.focusedModal.classList.remove("show");
+  el.focusedModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("focused-active");
+  saveState();
+  render();
+}
+
+function getFocusedQuestion() {
+  return appState.filteredQuestions[appState.focused.index];
+}
+
+function answerFocusedQuestion(letter) {
+  const q = getFocusedQuestion();
+  if (!q || appState.focused.paused) return;
+  const previous = appState.answers[q.uid];
+  const attempt = { selected: letter, isCorrect: letter === q.correta, answeredAt: new Date().toISOString(), mode: "focused" };
+  appState.answers[q.uid] = {
+    selected: letter,
+    correct: q.correta,
+    isCorrect: attempt.isCorrect,
+    answeredAt: attempt.answeredAt,
+    bank: q.sourceKey,
+    theme: q.tema,
+    attempts: [...(previous?.attempts || []), attempt]
+  };
+  showToast(attempt.isCorrect ? "Correta!" : "Errada — veja a explicação.");
+  appState.currentIndex = appState.focused.index;
+  saveState();
+  renderFocusedSimulator();
+  renderHeaderStats();
+}
+
+function focusedMove(delta) {
+  const next = appState.focused.index + delta;
+  if (next < 0 || next >= appState.filteredQuestions.length) return;
+  appState.focused.index = next;
+  appState.currentIndex = next;
+  saveState();
+  renderFocusedSimulator();
+}
+
+function renderFocusedSimulator() {
+  if (!el.focusedQuestion) return;
+  const q = getFocusedQuestion();
+  if (!q) {
+    el.focusedQuestion.innerHTML = '<div class="empty-state"><b>Sem questões para exibir.</b><p class="mini">Saia do modo focado e ajuste os filtros.</p></div>';
+    el.focusedPrevBtn.disabled = true;
+    el.focusedNextBtn.disabled = true;
+    return;
+  }
+  const answer = appState.answers[q.uid];
+  const total = appState.filteredQuestions.length;
+  const pos = appState.focused.index + 1;
+  el.focusedDisciplineLabel.textContent = appState.focused.snapshotFilters?.bank && appState.focused.snapshotFilters.bank !== "all"
+    ? (BANKS.find(b => b.key === appState.focused.snapshotFilters.bank)?.label || "Modo focado")
+    : "Modo focado · Todas as disciplinas";
+  el.focusedProgress.textContent = "Questão " + pos + " de " + total + " · " + q.sourceName;
+  const choicesHtml = LETTERS.map(letter => {
+    let cls = "alt";
+    if (answer?.selected === letter) cls += " selected";
+    if (answer && letter === q.correta) cls += " correct";
+    if (answer && answer.selected === letter && letter !== q.correta) cls += " wrong";
+    const icon = answer && letter === q.correta ? "✓" : (answer && answer.selected === letter && letter !== q.correta ? "×" : "");
+    return '<button class="' + cls + '" data-focused-answer="' + letter + '"><span class="letter">' + letter + '</span><span>' + escapeHtml(q.alternativas[letter]) + '</span><span class="answer-icon">' + icon + '</span></button>';
+  }).join("");
+  const feedbackHtml = answer
+    ? '<div class="feedback"><b>Gabarito: ' + escapeHtml(q.correta) + '</b><br>' + escapeHtml(q.explicacao) + '<p class="mini"><b>Fonte:</b> ' + escapeHtml(q.fonte) + '</p></div>'
+    : "";
+  el.focusedQuestion.innerHTML =
+    '<div class="topic">' + escapeHtml(q.tema) + '</div>' +
+    '<div class="enunciado">' + escapeHtml(q.enunciado) + '</div>' +
+    '<div class="alternativas">' + choicesHtml + '</div>' +
+    feedbackHtml;
+  el.focusedQuestion.querySelectorAll("[data-focused-answer]").forEach(btn =>
+    btn.addEventListener("click", () => answerFocusedQuestion(btn.dataset.focusedAnswer))
+  );
+  el.focusedPrevBtn.disabled = appState.focused.index === 0;
+  el.focusedNextBtn.disabled = appState.focused.index >= total - 1;
+  el.focusedPauseBtn.textContent = appState.focused.paused ? "▶ Retomar" : "⏸ Pausar";
+}
+
+function renderFocusedTimer() {
+  if (!el.focusedTimer) return;
+  if (!appState.focused.startedAt) { el.focusedTimer.textContent = "00:00"; return; }
+  let elapsed = Date.now() - appState.focused.startedAt - appState.focused.totalPausedMs;
+  if (appState.focused.paused && appState.focused.pausedAt) {
+    elapsed -= (Date.now() - appState.focused.pausedAt);
+  }
+  if (elapsed < 0) elapsed = 0;
+  const min = String(Math.floor(elapsed / 60000)).padStart(2, "0");
+  const sec = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, "0");
+  el.focusedTimer.textContent = min + ":" + sec;
+}
+
+function onBrandClick() {
+  if (appState.focused.active) {
+    el.brandModal.classList.add("show");
+  } else {
+    scrollToSection("heroSection");
+    setActiveNav("home");
+  }
+}
+
+function brandModalClose() {
+  el.brandModal.classList.remove("show");
 }
 
 function boot() {
@@ -992,9 +1412,15 @@ function boot() {
   bindEvents();
   setupMobileShortcuts();
   applyFilters({ resetIndex: false });
+  renderTip();
   render();
   updateTimer();
-  setInterval(updateTimer, 1000);
+  setInterval(() => { updateTimer(); renderFocusedTimer(); }, 1000);
+  if (appState.focused.startedAt && appState.focused.active && !appState.focused.paused) {
+    openFocusedSimulator({ resume: true });
+  } else {
+    updateResumeBanner();
+  }
 }
 
 boot();
